@@ -1,5 +1,15 @@
 RewriteEngine On
 RewriteBase /
+
+# PDF.js worker and other ESM assets need a JS MIME type on Apache hosts.
+<IfModule mod_mime.c>
+  AddType text/javascript .mjs
+  AddType application/javascript .mjs
+</IfModule>
+
+# Never SPA-fallback real files under /assets/
+RewriteRule ^assets/ - [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]

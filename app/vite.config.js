@@ -34,6 +34,15 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
+        // Many shared hosts mishandle .mjs (wrong MIME / SPA HTML fallback),
+        // which breaks the PDF.js worker ("Setting up fake worker failed").
+        assetFileNames(assetInfo) {
+          const name = assetInfo.name || "";
+          if (name.includes("pdf.worker") && name.endsWith(".mjs")) {
+            return "assets/[name]-[hash].js";
+          }
+          return "assets/[name]-[hash][extname]";
+        },
         manualChunks(id) {
           if (!id.includes("node_modules")) return;
           if (id.includes("pdfjs-dist")) return "pdfjs";

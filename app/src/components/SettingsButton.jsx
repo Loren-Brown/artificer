@@ -11,6 +11,7 @@ import {
   loadLatexTheme,
   saveLatexTheme,
 } from "./latexThemes.js";
+import { clearBrowserAppCache } from "../browserSupport.js";
 
 function IconSettings() {
   return (
@@ -154,6 +155,16 @@ export function SettingsButton({
     setByokForm(emptyByokForm());
     setError("");
     setCopyStatus("");
+  }
+
+  async function onClearCache() {
+    const ok = window.confirm(
+      "Clear cache and reset Artificer?\n\nThis removes all saved browser data for this site (settings, API key, last workspace link, and UI preferences) and reloads the app as if you have never visited before.\n\nFiles in your workspace folder on disk are not deleted.",
+    );
+    if (!ok) return;
+    closeSettings();
+    await clearBrowserAppCache();
+    window.location.reload();
   }
 
   function onChangeWorkspaceClick() {
@@ -374,6 +385,23 @@ export function SettingsButton({
                   Clear saved key
                 </button>
               </form>
+            </section>
+
+            <section className="settings-section">
+              <h4>Browser data</h4>
+              <p className="muted">
+                Clears settings, saved API key, workspace link, and other
+                preferences in this browser, then reloads as a first visit.
+                Does not delete files on disk.
+              </p>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => void onClearCache()}
+                data-tooltip="Reset Artificer as if you have never visited"
+              >
+                Clear cache…
+              </button>
             </section>
           </div>
         </Modal>
