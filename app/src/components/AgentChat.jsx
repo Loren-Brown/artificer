@@ -14,6 +14,7 @@ import {
   subscribeAgentContext,
   subscribeAgentPromptSaved,
   subscribeOpenAgentChat,
+  subscribeResumeFullscreen,
 } from "../agentContext.js";
 
 function IconChat() {
@@ -33,6 +34,17 @@ function IconClose() {
       <path
         fill="currentColor"
         d="M6.7 5.3a1 1 0 0 0-1.4 1.4L10.58 12 5.3 17.3a1 1 0 1 0 1.4 1.4L12 13.42l5.3 5.28a1 1 0 0 0 1.4-1.4L13.42 12l5.28-5.3a1 1 0 0 0-1.4-1.4L12 10.58 6.7 5.3Z"
+      />
+    </svg>
+  );
+}
+
+function IconMinimize() {
+  return (
+    <svg className="btn-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        fill="currentColor"
+        d="M5 12.75a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H5.75a.75.75 0 0 1-.75-.75Z"
       />
     </svg>
   );
@@ -74,6 +86,10 @@ function emptyByokForm() {
  */
 export function AgentChat() {
   const [open, setOpen] = useState(false);
+  const [panelMounted, setPanelMounted] = useState(false);
+  const [panelAnimOpen, setPanelAnimOpen] = useState(false);
+  const [minimized, setMinimized] = useState(false);
+  const [resumeFullscreen, setResumeFullscreenState] = useState(false);
   const [byokOpen, setByokOpen] = useState(false);
   const [byokForm, setByokForm] = useState(emptyByokForm);
   const [byokError, setByokError] = useState("");
@@ -129,6 +145,32 @@ export function AgentChat() {
       setReinitToast(null);
     }, 6000);
   }
+
+  useEffect(() => {
+    return subscribeResumeFullscreen(setResumeFullscreenState);
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      setPanelMounted(true);
+      const id = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setPanelAnimOpen(true));
+      });
+      return () => cancelAnimationFrame(id);
+    }
+    setPanelAnimOpen(false);
+    return undefined;
+  }, [open]);
+
+  useEffect(() => {
+    if (open || !panelMounted) return undefined;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const delay = reduceMotion ? 0 : 220;
+    const timer = window.setTimeout(() => setPanelMounted(false), delay);
+    return () => window.clearTimeout(timer);
+  }, [open, panelMounted]);
 
   useEffect(() => {
     if (!listRef.current) return;
@@ -218,6 +260,7 @@ export function AgentChat() {
   }, [setupOpen, selectedRole]);
 
   function continueAfterByok() {
+    setMinimized(false);
     setOpen(true);
     if (!conversationRef.current.conversationId) setSetupOpen(true);
   }
@@ -230,12 +273,6 @@ export function AgentChat() {
       return;
     }
     continueAfterByok();
-  }
-
-  function openByokSettings() {
-    setByokForm(emptyByokForm());
-    setByokError("");
-    setByokOpen(true);
   }
 
   function onSkipByok() {
@@ -415,12 +452,20 @@ export function AgentChat() {
     setError("");
     setBusy(false);
     setSetupOpen(false);
+    setMinimized(false);
+    setOpen(false);
+  }
+
+  function minimizeAgentPanel() {
+    setMinimized(true);
     setOpen(false);
   }
 
   const agentLabel = agentMeta.role
     ? `${agentMeta.role}${agentMeta.name ? ` / ${agentMeta.name}` : ""}`
     : null;
+
+  const showLauncher = !open && (!resumeFullscreen || minimized);
 
   return (
     <>
@@ -444,7 +489,7 @@ export function AgentChat() {
         </div>
       ) : null}
 
-      {!open ? (
+      {showLauncher ? (
         <button
           type="button"
           className="btn btn-icon agent-chat-launcher"
@@ -456,8 +501,21 @@ export function AgentChat() {
         </button>
       ) : null}
 
-      <DraggablePanel open={open} className="agent-chat-panel">
-        <div className="agent-chat-header" data-drag-handle>
+      {panelMounted ? (
+        <button
+          type="button"
+          className={`agent-chat-backdrop${panelAnimOpen ? " is-open" : ""}`}
+          aria-label="Minimize resume agent chat"
+          onClick={minimizeAgentPanel}
+        />
+      ) : null}
+
+      <DraggablePanel
+        open={panelMounted}
+        className={`agent-chat-panel${panelAnimOpen ? " is-open" : ""}`}
+        centered
+      >
+        <div className="agent-chat-header">
           <div className="agent-chat-title-block">
             <h2 id={titleId}>Resume agent</h2>
             {agentLabel ? (
@@ -465,14 +523,6 @@ export function AgentChat() {
             ) : null}
           </div>
           <div className="agent-chat-header-actions">
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={openByokSettings}
-              data-tooltip="LLM provider settings"
-            >
-              LLM
-            </button>
             <button
               type="button"
               className={`btn btn-icon${showWorkingOutput ? " is-active" : ""}`}
@@ -490,6 +540,15 @@ export function AgentChat() {
               }
             >
               <IconWorkLog />
+            </button>
+            <button
+              type="button"
+              className="btn btn-icon"
+              onClick={minimizeAgentPanel}
+              data-tooltip="Minimize"
+              aria-label="Minimize resume agent chat"
+            >
+              <IconMinimize />
             </button>
             <button
               type="button"

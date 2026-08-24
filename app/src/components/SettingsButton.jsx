@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Modal } from "./Modal.jsx";
 import {
   CORS_FRIENDLY_PROVIDERS,
@@ -59,10 +59,15 @@ export function SettingsButton({
   workspaceName = "",
   onChangeWorkspace,
   isLite = false,
+  showTrigger = true,
+  open: openProp,
+  onOpenChange,
 }) {
   const formIdRaw = useId();
   const formId = `settings${formIdRaw.replace(/:/g, "")}`;
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const controlled = openProp !== undefined;
+  const open = controlled ? Boolean(openProp) : uncontrolledOpen;
   const [byokForm, setByokForm] = useState(emptyByokForm);
   const [error, setError] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
@@ -75,19 +80,28 @@ export function SettingsButton({
     [byokForm.provider],
   );
 
+  function setOpen(next) {
+    if (!controlled) setUncontrolledOpen(next);
+    onOpenChange?.(next);
+  }
+
+  const wasOpenRef = useRef(false);
+  useEffect(() => {
+    if (open && !wasOpenRef.current) {
+      setByokForm(emptyByokForm());
+      setError("");
+      setCopyStatus("");
+      setRevealKey(false);
+    }
+    wasOpenRef.current = open;
+  }, [open]);
+
   function openSettings() {
-    setByokForm(emptyByokForm());
-    setError("");
-    setCopyStatus("");
-    setRevealKey(false);
     setOpen(true);
   }
 
   function closeSettings() {
     setOpen(false);
-    setError("");
-    setCopyStatus("");
-    setRevealKey(false);
   }
 
   async function onCopyKey() {
@@ -142,15 +156,17 @@ export function SettingsButton({
 
   return (
     <>
-      <button
-        type="button"
-        className="btn btn-icon app-header-action"
-        onClick={openSettings}
-        data-tooltip="Settings"
-        aria-label="Settings"
-      >
-        <IconSettings />
-      </button>
+      {showTrigger ? (
+        <button
+          type="button"
+          className="btn btn-icon app-header-action settings-trigger-desktop"
+          onClick={openSettings}
+          data-tooltip="Settings"
+          aria-label="Settings"
+        >
+          <IconSettings />
+        </button>
+      ) : null}
 
       {open ? (
         <Modal

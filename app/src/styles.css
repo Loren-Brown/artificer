@@ -228,6 +228,68 @@ button {
   flex-shrink: 0;
 }
 
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.mobile-nav {
+  display: none;
+  position: relative;
+}
+
+.mobile-nav-dropdown {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 40;
+  min-width: min(18rem, calc(100vw - 2rem));
+  max-height: min(70vh, 28rem);
+  overflow: auto;
+  padding: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 0.15rem;
+}
+
+.mobile-nav-item {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  border-radius: 8px;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item:focus-visible {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  outline: none;
+}
+
+.mobile-nav-item.is-active {
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--mana-glow) 40%, var(--line));
+  font-weight: 600;
+}
+
+.mobile-nav-separator {
+  height: 1px;
+  margin: 0.35rem 0.4rem;
+  background: var(--line);
+}
+
+.mobile-nav-item-settings {
+  font-weight: 600;
+}
+
 .settings-modal .settings-section h4 {
   margin: 0 0 0.35rem;
   font-size: 1rem;
@@ -374,6 +436,44 @@ button {
   overflow: visible;
 }
 
+@media (max-width: 720px) {
+  .panel-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .panel-toolbar-start,
+  .toolbar-actions {
+    width: 100%;
+  }
+
+  .panel-toolbar-start {
+    flex-wrap: wrap;
+  }
+
+  .toolbar-actions {
+    justify-content: flex-end;
+    padding-top: 0.15rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .resume-file-picker select {
+    max-width: none;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tabs {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: block;
+    position: relative;
+  }
+}
+
 .panel-toolbar h2 {
   margin: 0;
   font-size: 1.15rem;
@@ -412,6 +512,39 @@ button {
   flex-direction: column;
   min-height: 0;
   position: relative;
+}
+
+.panel-body.resume-preview-body.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  min-height: 100dvh;
+  padding: 0.75rem;
+  background: var(--bg-abyssal-dark);
+  border-radius: 0;
+}
+
+.panel-body.resume-preview-body.is-fullscreen .resume-pdf-frame,
+.panel-body.resume-preview-body.is-fullscreen .resume-latex-host,
+.panel-body.resume-preview-body.is-fullscreen > .lazy-pane-fallback {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.panel-body.resume-preview-body.is-fullscreen .resume-fullscreen-exit,
+.resume-fullscreen-exit {
+  position: fixed !important;
+  top: max(0.75rem, env(safe-area-inset-top, 0px)) !important;
+  right: max(0.75rem, env(safe-area-inset-right, 0px)) !important;
+  left: auto !important;
+  bottom: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: max(0.75rem, env(safe-area-inset-right, 0px)) !important;
+  z-index: 70;
+  margin: 0;
+  box-shadow: var(--shadow);
+  background: var(--bg-elevated);
 }
 
 .panel-body.resume-preview-body.is-compiling .resume-pdf-frame,
@@ -890,7 +1023,7 @@ button:focus-visible {
   justify-content: center;
   padding: 4vh 1rem;
   overflow: auto;
-  z-index: 50;
+  z-index: 80;
 }
 
 .modal-backdrop-dismiss {
@@ -1150,7 +1283,7 @@ button:focus-visible {
   position: fixed;
   right: 1.25rem;
   bottom: 1.25rem;
-  z-index: 40;
+  z-index: 70;
   width: 3.25rem;
   height: 3.25rem;
   box-shadow: var(--shadow);
@@ -1167,6 +1300,25 @@ button:focus-visible {
 .agent-chat-launcher .btn-icon-svg {
   width: 1.45rem;
   height: 1.45rem;
+}
+
+.agent-chat-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: color-mix(in srgb, var(--bg-abyssal-dark) 45%, transparent);
+  cursor: default;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.agent-chat-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .agent-prompt-editor {
@@ -1186,7 +1338,7 @@ button:focus-visible {
 
 .draggable-panel {
   position: fixed;
-  z-index: 50;
+  z-index: 66;
   width: min(380px, calc(100vw - 1.5rem));
   max-height: min(560px, calc(100vh - 2rem));
   display: flex;
@@ -1195,6 +1347,40 @@ button:focus-visible {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+}
+
+.draggable-panel-centered {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(-50% + 0.75rem)) scale(0.94);
+  width: min(420px, calc(100vw - 2rem));
+  max-height: min(72vh, calc(100vh - 2rem));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.draggable-panel-centered.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.draggable-panel-centered .agent-chat-header {
+  cursor: default;
+}
+
+.draggable-panel-centered .agent-chat-header:active {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-backdrop,
+  .draggable-panel-centered {
+    transition: none;
+  }
 }
 
 .agent-chat-header {
@@ -1382,6 +1568,104 @@ button:focus-visible {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Mobile touch targets — must follow base .btn / .btn-icon rules so they win. */
+@media (max-width: 720px) {
+  .btn {
+    font-size: 1.5em;
+    padding: 0.675rem 1.275rem;
+  }
+
+  .btn.btn-icon,
+  .panel-toolbar .btn-icon,
+  .agent-chat-header-actions .btn-icon,
+  .app-header-action.btn-icon,
+  .resume-fullscreen-exit.btn-icon {
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
+    padding: 0;
+    font-size: 1rem;
+  }
+
+  .btn.btn-icon .btn-icon-svg,
+  .panel-toolbar .btn-icon-svg,
+  .agent-chat-header-actions .btn-icon-svg,
+  .app-header-action .btn-icon-svg,
+  .resume-fullscreen-exit .btn-icon-svg {
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+
+  .tab {
+    font-size: 1.5em;
+    padding: 0.675rem 1.275rem;
+  }
+
+  .resume-file-picker select,
+  .latex-theme-picker select {
+    font-size: 1.35rem;
+    padding: 0.55rem 0.8rem;
+    min-height: 3rem;
+  }
+
+  .resume-menu-item {
+    font-size: 1.5em;
+    padding: 0.675rem 0.9rem;
+  }
+
+  .drag-handle {
+    width: 2.4rem;
+    min-height: 2.4rem;
+    font-size: 1.275rem;
+  }
+
+  .item-card {
+    padding: 1.275rem 1.5rem;
+    font-size: 1.15em;
+  }
+
+  .agent-context-chip-dismiss {
+    font-size: 1.5rem;
+    padding: 0.35rem 0.45rem;
+  }
+
+  .agent-chat-launcher.btn-icon {
+    width: 4.875rem;
+    height: 4.875rem;
+    min-width: 4.875rem;
+    min-height: 4.875rem;
+  }
+
+  .agent-chat-launcher .btn-icon-svg {
+    width: 2.175rem;
+    height: 2.175rem;
+  }
+
+  .app-toast-dismiss.btn-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .mobile-nav-item {
+    font-size: 1.35em;
+    padding: 0.85rem 1rem;
+    min-height: 3rem;
+  }
+
+  .mobile-nav-toggle.btn-icon {
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
+  }
+
+  /* Must beat later .btn-icon { display: inline-flex } */
+  button.settings-trigger-desktop.btn-icon {
+    display: none !important;
   }
 }
 

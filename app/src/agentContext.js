@@ -4,6 +4,9 @@ export const PDF_CONTEXT_MAX_CHARS = 4000;
 const contextListeners = new Set();
 const openListeners = new Set();
 const promptSavedListeners = new Set();
+const resumeFullscreenListeners = new Set();
+
+let resumeFullscreen = false;
 
 /**
  * Subscribe to agent context events.
@@ -32,6 +35,39 @@ export function requestOpenAgentChat() {
       /* ignore subscriber errors */
     }
   }
+}
+
+/**
+ * Whether the resume PDF/LaTeX preview is in fullscreen overlay mode.
+ */
+export function getResumeFullscreen() {
+  return resumeFullscreen;
+}
+
+export function setResumeFullscreen(next) {
+  const value = Boolean(next);
+  if (value === resumeFullscreen) return;
+  resumeFullscreen = value;
+  for (const handler of resumeFullscreenListeners) {
+    try {
+      handler(value);
+    } catch {
+      /* ignore subscriber errors */
+    }
+  }
+}
+
+/**
+ * @returns {() => void} unsubscribe
+ */
+export function subscribeResumeFullscreen(handler) {
+  resumeFullscreenListeners.add(handler);
+  try {
+    handler(resumeFullscreen);
+  } catch {
+    /* ignore */
+  }
+  return () => resumeFullscreenListeners.delete(handler);
 }
 
 /**

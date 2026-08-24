@@ -15,6 +15,7 @@ import {
 } from "./components/DataTypeTabList.jsx";
 import { BrandMark } from "./components/BrandMark.jsx";
 import { SettingsButton } from "./components/SettingsButton.jsx";
+import { MobileNavMenu } from "./components/MobileNavMenu.jsx";
 import {
   WorkspaceProvider,
   useWorkspace,
@@ -61,6 +62,7 @@ function AppShell() {
   const { phase, changeWorkspace, root, isLite } = useWorkspace();
   const [active, setActiveState] = useState(readCachedActiveTab);
   const [showLiteBanner, setShowLiteBanner] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const tabPrefix = useId();
   const current =
     DATA_TYPE_TABS.find((tab) => tab.id === active) ?? DATA_TYPE_TABS[0];
@@ -120,11 +122,20 @@ function AppShell() {
             </p>
           </div>
         </div>
-        <SettingsButton
-          workspaceName={workspaceName}
-          onChangeWorkspace={changeWorkspace}
-          isLite={isLite}
-        />
+        <div className="app-header-actions">
+          <MobileNavMenu
+            activeId={active}
+            onChange={setActive}
+            onOpenSettings={() => setSettingsOpen(true)}
+          />
+          <SettingsButton
+            workspaceName={workspaceName}
+            onChangeWorkspace={changeWorkspace}
+            isLite={isLite}
+            open={settingsOpen}
+            onOpenChange={setSettingsOpen}
+          />
+        </div>
       </header>
       <DataTypeTabList
         activeId={active}

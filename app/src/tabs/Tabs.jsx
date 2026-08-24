@@ -1,9 +1,10 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Modal } from "../components/Modal.jsx";
 import { ItemList } from "../components/ItemList.jsx";
 import { LATEX_THEMES } from "../components/latexThemes.js";
 import { timelineFromDatedItems } from "../components/timelineUtils.js";
-import { addPdfSelectionContext } from "../agentContext.js";
+import { addPdfSelectionContext, setResumeFullscreen } from "../agentContext.js";
 import { parseDate, sortByOrderAsc, withIndex, collectOrderIssues, sortByDateDesc, formatDurationPlain, mergeIssueMaps, collectEmploymentDateIssues, employmentTimelineMarkers } from "../utils.js";
 import * as api from "../api.js";
 import {
@@ -211,6 +212,22 @@ function IconLatex() {
   );
 }
 
+function IconMinimizeView() {
+  return (
+    <svg
+      className="btn-icon-svg"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        d="M5 12.75a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H5.75a.75.75 0 0 1-.75-.75Z"
+      />
+    </svg>
+  );
+}
+
 const VIEW_CYCLE = ["latex", "pdf"];
 
 function viewIcon(viewId) {
@@ -255,6 +272,25 @@ export function ResumeTab() {
     }
     return "dark";
   });
+  const [previewFullscreen, setPreviewFullscreen] = useState(false);
+  const previewPointerRef = useRef(null);
+
+  useEffect(() => {
+    setResumeFullscreen(previewFullscreen);
+    return () => setResumeFullscreen(false);
+  }, [previewFullscreen]);
+
+  useEffect(() => {
+    if (!previewFullscreen) return undefined;
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setPreviewFullscreen(false);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [previewFullscreen]);
 
   function onLatexThemeChange(next) {
     setLatexTheme(next);
@@ -650,6 +686,32 @@ export function ResumeTab() {
       : resumeItems;
   const pickerValue = fileLabel || pickerOptions[0] || "";
 
+  function onPreviewPointerDown(event) {
+    if (previewFullscreen || showCompiling) return;
+    if (event.button !== 0) return;
+    previewPointerRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      target: event.target,
+    };
+  }
+
+  function onPreviewPointerUp(event) {
+    if (previewFullscreen || showCompiling) return;
+    const start = previewPointerRef.current;
+    previewPointerRef.current = null;
+    if (!start || event.button !== 0) return;
+    if (event.target.closest?.("button, a, input, select, textarea, [role='menuitem']")) {
+      return;
+    }
+    const dx = Math.abs(event.clientX - start.x);
+    const dy = Math.abs(event.clientY - start.y);
+    if (dx > 8 || dy > 8) return;
+    const selected = window.getSelection?.()?.toString()?.trim();
+    if (selected) return;
+    setPreviewFullscreen(true);
+  }
+
   return (
     <div className="panel">
       <div className="panel-toolbar">
@@ -840,8 +902,24 @@ export function ResumeTab() {
         </div>
       </div>
       <div
-        className={`panel-body resume-preview-body${showCompiling ? " is-compiling" : ""}`}
+        className={`panel-body resume-preview-body${showCompiling ? " is-compiling" : ""}${previewFullscreen ? " is-fullscreen" : ""}`}
+        onPointerDown={onPreviewPointerDown}
+        onPointerUp={onPreviewPointerUp}
       >
+        {previewFullscreen && typeof document !== "undefined"
+          ? createPortal(
+              <button
+                type="button"
+                className="btn btn-icon resume-fullscreen-exit"
+                onClick={() => setPreviewFullscreen(false)}
+                data-tooltip="Exit fullscreen"
+                aria-label="Exit fullscreen resume view"
+              >
+                <IconMinimizeView />
+              </button>,
+              document.body,
+            )
+          : null}
         {error ? <div className="error-banner">{error}</div> : null}
         {showCompiling ? (
           <div className="resume-compile-overlay" role="status" aria-live="polite">
