@@ -60,6 +60,20 @@ npm run preview
 
 Host `app/dist/` over HTTPS for File System Access + WebMCP in production.
 
+### Deploy (SFTP)
+
+Publish the production build to a remote host with password auth:
+
+1. Copy [`.env.example`](./.env.example) → `.env` and set `SFTP_HOST`, `SFTP_USER`, `SFTP_PASSWORD`, and `SFTP_REMOTE_DIR`.
+2. From the repo root (after `npm install`):
+
+```bash
+npm run deploy          # build then upload app/dist
+npm run deploy:upload   # upload existing app/dist only
+```
+
+`.env` is gitignored. Point `SFTP_REMOTE_DIR` at the directory served as `/artificer/` (Vite `base`). Optional: `SFTP_CLEAR_REMOTE=1` to wipe that remote directory before upload.
+
 ## Tests
 
 From the repo root (after `npm install`):

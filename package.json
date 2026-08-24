@@ -11,14 +11,18 @@
     "app:preview": "npm --prefix app run preview",
     "app:test": "npm --prefix app test",
     "app:test:watch": "npm --prefix app run test:watch",
-    "app:lint": "npm --prefix app run lint"
+    "app:lint": "npm --prefix app run lint",
+    "deploy": "node scripts/deploy-sftp.mjs",
+    "deploy:upload": "DEPLOY_SKIP_BUILD=1 node scripts/deploy-sftp.mjs"
   },
   "dependencies": {
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1"
   },
   "devDependencies": {
+    "dotenv": "^16.6.1",
     "jsdom": "^29.1.1",
+    "ssh2-sftp-client": "^12.1.1",
     "vitest": "^3.2.3"
   }
 }

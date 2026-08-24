@@ -438,7 +438,13 @@ button {
   overflow: hidden;
   /* Keep app colors out of the Prism shadow tree */
   color: initial;
-  background: transparent;
+  background: var(--bg-navy-panel);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mana-glow) 8%, transparent);
+}
+
+.resume-latex-host[data-theme="light"] {
+  background: var(--starlight-white);
+  box-shadow: none;
 }
 
 .resume-pdf-frame {
@@ -758,6 +764,11 @@ button:focus-visible {
   border-radius: 8px;
   padding: 0.35rem 0.55rem;
   font-size: 0.82rem;
+}
+
+.latex-theme-picker select:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
 }
 
 .resume-menu {

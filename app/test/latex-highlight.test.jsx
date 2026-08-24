@@ -15,25 +15,28 @@ describe("LatexHighlight", () => {
     );
     const host = container.querySelector(".resume-latex-host");
     expect(host).toBeTruthy();
-    expect(host.getAttribute("data-theme")).toBe("light");
+    expect(host.getAttribute("data-theme")).toBe("dark");
 
     await waitFor(() => {
       expect(shadowPre(container)?.querySelector(".token")).toBeTruthy();
     });
     const pre = shadowPre(container);
+    expect(pre.getAttribute("data-surface")).toBe("artificer");
     expect(pre.textContent).toContain("documentclass");
     expect(pre.textContent).toContain("comment");
   });
 
-  it("applies the selected Prism theme", async () => {
+  it("applies the selected theme surface", async () => {
     const { container } = render(
-      <LatexHighlight code={"\\section{Hi}"} theme="dark" />,
+      <LatexHighlight code={"\\section{Hi}"} theme="light" />,
     );
     expect(
       container.querySelector(".resume-latex-host")?.getAttribute("data-theme"),
-    ).toBe("dark");
+    ).toBe("light");
     await waitFor(() => {
-      expect(shadowPre(container)).toBeTruthy();
+      expect(shadowPre(container)?.getAttribute("data-surface")).toBe(
+        "parchment",
+      );
     });
   });
 });
