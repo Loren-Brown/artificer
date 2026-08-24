@@ -1,1 +1,211 @@
-[]
+[
+  {
+    "order": 0,
+    "company": "Highspot",
+    "title": "Senior Software Engineer",
+    "teams": [
+      "Analytics Data Visualization",
+      "Analytics Data Platform",
+      "Analytics Observability"
+    ],
+    "location": "Seattle, WA",
+    "start_date": "03-01-2022",
+    "current": true,
+    "summary": "Designing and building customer facing analytics data pipelines and visualization tools. Examples include near real-time data aggregation, dynamic report generation, custom analytics dashboarding, and observability pipleines",
+    "skills": [
+      "Full-stack software development",
+      "Software observability",
+      "Project management",
+      "Technical Documentation",
+      "Developer Tooling",
+      "Developer Training",
+      "Mentoring",
+      "Data visualization",
+      "Data analysis",
+      "Root cause analysis",
+      "Cross-team collaboration",
+      "AI tooling"
+    ],
+    "silent_tags": [
+      "Jira",
+      "npm",
+      "Docker",
+      "JSON",
+      "Amazon Web Services"
+    ],
+    "languages": [
+      "SQL",
+      "Python",
+      "TypeScript",
+      "JavaScript"
+    ],
+    "frameworks": [
+      "Open Telemetry",
+      "GraphQL",
+      "Kubernetes",
+      "React",
+      "Node",
+      "REST APIs"
+    ],
+    "platforms": [
+      "Snowflake",
+      "New Relic",
+      "AWS",
+      "PostgreSQL",
+      "MongoDB"
+    ],
+    "tools": [
+      "Git"
+    ],
+    "projects": [
+      "Analytics End-to-End Observability Platform",
+      "Org-wide Observability Framework",
+      "Platform Accessability Tooling",
+      "Client Side Data Aggregation",
+      "Analytics Template Upgrade Service",
+      "Customizable Analytics Dashboard Template Platform",
+      "Dynamic Dashboard Generator"
+    ],
+    "committees": [
+      "AI Developer Tooling and Safety"
+    ]
+  },
+  {
+    "order": 1,
+    "company": "Wrench",
+    "title": "Senior Software Engineer",
+    "teams": [
+      "Platform"
+    ],
+    "location": "Seattle, WA",
+    "start_date": "11-01-2019",
+    "end_date": "03-01-2022",
+    "current": false,
+    "summary": "High-velocity product and tooling development in a startup environment while maintaining a large legacy codebase.",
+    "skills": [
+      "fullstack",
+      "startup",
+      "java",
+      "angular"
+    ],
+    "silent_tags": [],
+    "languages": [
+      "Java",
+      "SQL"
+    ],
+    "frameworks": [
+      "Angular",
+      "Flutter"
+    ],
+    "platforms": [],
+    "tools": [],
+    "projects": [
+      "Data Normalizatin Service",
+      "Devops Tooling",
+      "Mobile App Feature Development"
+    ],
+    "committees": []
+  },
+  {
+    "order": 2,
+    "company": "Systema",
+    "title": "Software Engineer",
+    "teams": [],
+    "location": "Dresden, Germany",
+    "start_date": "07-01-2018",
+    "end_date": "09-01-2019",
+    "current": false,
+    "summary": "Designed and built high-impact automation and reporting software for large semiconductor manufacturers with a small team.",
+    "skills": [
+      "data visualization",
+      "data analytics",
+      "full-stack software development"
+    ],
+    "silent_tags": [],
+    "languages": [
+      "Typescript",
+      "Java",
+      "SQL"
+    ],
+    "frameworks": [
+      "Spring",
+      "Angular"
+    ],
+    "platforms": [],
+    "tools": [],
+    "projects": [
+      "Semiconductor Fabrication Analytics and Visualization Tools"
+    ],
+    "committees": []
+  },
+  {
+    "order": 3,
+    "company": "Hyperspace XR",
+    "title": "Technical Project Manager and Consultant",
+    "teams": [],
+    "location": "Seattle, WA",
+    "start_date": "09-01-2017",
+    "end_date": "08-01-2018",
+    "current": false,
+    "summary": "Part-time technical project manager and software architecture consultant for a multiplayer VR/AR experience.",
+    "skills": [
+      "vr",
+      "leadership",
+      "architecture",
+      "consulting"
+    ],
+    "silent_tags": [],
+    "languages": [
+      "C++",
+      "Python",
+      "SQL"
+    ],
+    "frameworks": [
+      "Angular"
+    ],
+    "platforms": [],
+    "tools": [],
+    "projects": [
+      "Hyperspace XR Multiplayer Experience"
+    ],
+    "committees": []
+  },
+  {
+    "order": 4,
+    "company": "Pariveda Solutions",
+    "title": "Software Engineer",
+    "teams": [],
+    "location": "Seattle, WA",
+    "start_date": "08-01-2015",
+    "end_date": "08-01-2018",
+    "current": false,
+    "summary": "IT consulting focused on AWS cloud migrations, infrastructure as code, performance validation, and generalist full stack delivery.",
+    "skills": [
+      "aws",
+      "consulting",
+      "fullstack",
+      "devops"
+    ],
+    "silent_tags": [],
+    "languages": [
+      "Java",
+      "SQL",
+      "Python",
+      "C#"
+    ],
+    "frameworks": [
+      "React"
+    ],
+    "platforms": [
+      "AWS",
+      "Android"
+    ],
+    "tools": [],
+    "projects": [
+      "Edge Network Child Safety Android App",
+      "AWS S3 & Lambda Performance Testing",
+      "Fortune 500 AWS Cloud Migration"
+    ],
+    "committees": []
+  }
+]

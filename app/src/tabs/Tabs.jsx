@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Modal } from "../components/Modal.jsx";
 import { ItemList } from "../components/ItemList.jsx";
-import { LatexHighlight, LATEX_THEMES } from "../components/LatexHighlight.jsx";
-import { PdfViewer } from "../components/PdfViewer.jsx";
-import { Timeline, timelineFromDatedItems } from "../components/Timeline.jsx";
+import { LATEX_THEMES } from "../components/latexThemes.js";
+import { timelineFromDatedItems } from "../components/timelineUtils.js";
 import { addPdfSelectionContext } from "../agentContext.js";
 import { parseDate, sortByOrderAsc, withIndex, collectOrderIssues, sortByDateDesc, formatDurationPlain, mergeIssueMaps, collectEmploymentDateIssues, employmentTimelineMarkers } from "../utils.js";
 import * as api from "../api.js";
@@ -21,6 +20,26 @@ import {
   prepareProject,
   prepareSkillCategory,
 } from "../forms/forms.jsx";
+
+const PdfViewer = lazy(() =>
+  import("../components/PdfViewer.jsx").then((m) => ({ default: m.PdfViewer })),
+);
+const LatexHighlight = lazy(() =>
+  import("../components/LatexHighlight.jsx").then((m) => ({
+    default: m.LatexHighlight,
+  })),
+);
+const Timeline = lazy(() =>
+  import("../components/Timeline.jsx").then((m) => ({ default: m.Timeline })),
+);
+
+function LazyPane({ children, label = "Loading…" }) {
+  return (
+    <Suspense fallback={<div className="lazy-pane-fallback">{label}</div>}>
+      {children}
+    </Suspense>
+  );
+}
 
 function useDraft(initial) {
   const draftRef = useRef(initial);
@@ -483,6 +502,7 @@ export function ResumeTab() {
     });
     const pdfEs = api.subscribePublicResumePdfWebhook((payload) => {
       if (cancelled) return;
+      setCompiling(true);
       refreshPdf(payload).finally(() => {
         if (!cancelled) setCompiling(false);
       });
@@ -830,15 +850,20 @@ export function ResumeTab() {
           </div>
         ) : null}
         {showPdf ? (
-          <PdfViewer
-            className="resume-pdf-frame"
-            title="Compiled resume PDF"
-            src={pdfUrl}
-            onSelectionChange={setPdfSelection}
-          />
+          <LazyPane label="Loading PDF viewer…">
+            <PdfViewer
+              key={pdfUrl}
+              className="resume-pdf-frame"
+              title="Compiled resume PDF"
+              src={pdfUrl}
+              onSelectionChange={setPdfSelection}
+            />
+          </LazyPane>
         ) : null}
         {showLatex ? (
-          <LatexHighlight code={latex} theme={latexTheme} />
+          <LazyPane label="Loading LaTeX viewer…">
+            <LatexHighlight code={latex} theme={latexTheme} />
+          </LazyPane>
         ) : null}
       </div>
       {saveAsOpen ? (
@@ -1164,7 +1189,9 @@ function ArrayTab({
             },
           }))}
         />
-        <Timeline entries={timelineEntries} markers={timelineMarkers} />
+        <LazyPane label="Loading timeline…">
+          <Timeline entries={timelineEntries} markers={timelineMarkers} />
+        </LazyPane>
       </div>
       <FormModal
         title={mode?.kind === "create" ? addLabel : `Edit ${title.slice(0, -1)}`}

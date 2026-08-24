@@ -58,6 +58,7 @@ function emptyByokForm() {
 export function SettingsButton({
   workspaceName = "",
   onChangeWorkspace,
+  isLite = false,
 }) {
   const formIdRaw = useId();
   const formId = `settings${formIdRaw.replace(/:/g, "")}`;
@@ -179,19 +180,28 @@ export function SettingsButton({
           <div className="stack settings-modal">
             <section className="settings-section">
               <h4>Workspace</h4>
-              <p className="muted">
-                {workspaceName
-                  ? `Current folder: ${workspaceName}`
-                  : "Your resume data stays in a local folder you choose."}
-              </p>
-              <button
-                type="button"
-                className="btn"
-                onClick={onChangeWorkspaceClick}
-                data-tooltip="Leave this folder and pick another"
-              >
-                Change workspace…
-              </button>
+              {isLite ? (
+                <p className="muted">
+                  Lite mode uses an in-memory seed workspace. Changes are not
+                  written to disk and are lost when you refresh.
+                </p>
+              ) : (
+                <>
+                  <p className="muted">
+                    {workspaceName
+                      ? `Current folder: ${workspaceName}`
+                      : "Your resume data stays in a local folder you choose."}
+                  </p>
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={onChangeWorkspaceClick}
+                    data-tooltip="Leave this folder and pick another"
+                  >
+                    Change workspace…
+                  </button>
+                </>
+              )}
             </section>
 
             <section className="settings-section">

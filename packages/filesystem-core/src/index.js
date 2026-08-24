@@ -2,6 +2,8 @@
  * Browser workspace filesystem (File System Access API).
  */
 
+export { createMemoryRoot } from "./memfs.js";
+
 export const WORKSPACE_SUBDIRS = [
   "resume-data",
   "resumes",
@@ -25,7 +27,7 @@ function pathLabel(segments) {
   return segments.filter(Boolean).join("/") || ".";
 }
 
-/** Resolve a public asset path against Vite's `base` (e.g. `/artificer/`). */
+/** Resolve a public asset path against Vite's `base` (e.g. `/` or `/artificer/`). */
 export function publicAssetUrl(path) {
   const base =
     (typeof import.meta !== "undefined" && import.meta.env?.BASE_URL) || "/";
@@ -275,6 +277,11 @@ export async function dirIsEmpty(root, segments) {
 export async function copyUrlToWorkspace(root, segments, url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch seed ${url} (${res.status})`);
+  const contentType = String(res.headers.get("content-type") || "");
+  // Vite SPA fallback returns index.html with 200 for missing public assets.
+  if (contentType.includes("text/html")) {
+    throw new Error(`Failed to fetch seed ${url} (got HTML fallback)`);
+  }
   const buf = new Uint8Array(await res.arrayBuffer());
   await writeBinaryFile(root, segments, buf);
 }
@@ -311,7 +318,7 @@ const SEED_FILES = [
     "AGENT.md",
     "seed/prompts/rollplay/Default/AGENT.md",
   ],
-  ["resumes", "example.tex", "seed/resumes/example.tex"],
+  ["resumes", "demo.tex", "seed/resumes/demo.tex"],
   ["resume-examples", "example.tex", "seed/resume-examples/example.tex"],
   ["resume-data", "general.json", "seed/resume-data/general.json"],
   ["resume-data", "skills.json", "seed/resume-data/skills.json"],
@@ -344,16 +351,7 @@ export async function seedWorkspace(root, { force = false } = {}) {
     }
   }
 
-  try {
-    const currentExists = await pathExists(root, ["app", ".current"], "file");
-    if (!currentExists || force) {
-      await writeTextFile(root, ["app", ".current"], "example.tex\n");
-    }
-  } catch (err) {
-    errors.push(`app/.current: ${err.message || err}`);
-  }
-
-  if (errors.length === SEED_FILES.length + 1) {
+  if (errors.length === SEED_FILES.length) {
     throw new Error(
       `Could not write workspace files. Re-pick the folder in Chrome/Edge with write access.\n${errors.slice(0, 3).join("\n")}`,
     );

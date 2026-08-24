@@ -15,8 +15,10 @@ npm install --prefix app
 npm run app:dev
 ```
 
-- UI: http://127.0.0.1:5173/artificer/
-- First visit: pick or create a workspace folder (seeded with examples)
+- UI: http://127.0.0.1:5173/
+- Lite (in-memory): http://127.0.0.1:5173/lite
+- First visit on full mode: pick or create a workspace folder (seeded with examples)
+- Browsers without File System Access (`showDirectoryPicker`) are redirected from `/` to `/lite`
 
 From `app/` you can also run `npm run client` (or `npm run dev`).
 
@@ -72,7 +74,7 @@ npm run deploy          # build then upload app/dist
 npm run deploy:upload   # upload existing app/dist only
 ```
 
-`.env` is gitignored. Point `SFTP_REMOTE_DIR` at the directory served as `/artificer/` (Vite `base`). Optional: `SFTP_CLEAR_REMOTE=1` to wipe that remote directory before upload.
+`.env` is gitignored. Point `SFTP_REMOTE_DIR` at the directory served as the site root (Vite `base` is `/`). Optional: `SFTP_CLEAR_REMOTE=1` to wipe that remote directory before upload.
 
 ## Tests
 

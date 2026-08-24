@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-latex";
+import { LATEX_THEMES } from "./latexThemes.js";
 
-export const LATEX_THEMES = Object.freeze([
-  { id: "dark", label: "Artificer" },
-  { id: "light", label: "Parchment" },
-]);
-
+export { LATEX_THEMES };
 /** Arcane Font tokens — kept inside the shadow tree (host CSS vars do not pierce). */
 const ARTIFICER_THEME_CSS = `
 code[class*="language-"],

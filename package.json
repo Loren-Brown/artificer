@@ -6,6 +6,7 @@
     "test": "npm run test:packages && npm run app:test",
     "test:packages": "vitest run",
     "test:packages:watch": "vitest",
+    "test:integration": "vitest run packages/resume-core/test/integration",
     "app:dev": "npm --prefix app run client",
     "app:build": "npm --prefix app run build",
     "app:preview": "npm --prefix app run preview",

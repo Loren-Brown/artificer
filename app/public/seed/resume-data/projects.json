@@ -1,1 +1,653 @@
-[]
+[
+  {
+    "order": 0,
+    "name": "Analytics End-to-End Observability Platform",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Project Manager",
+        "description": "Gathered business and operational observability requiremnets from stakeholders across the org.  Created the engineering spec.  Designed the observability platform."
+      },
+      {
+        "type": "Subject Matter Expert",
+        "description": "Implemented best practeces documentation and developer training.  Known company-wide as the current observability expert."
+      },
+      {
+        "type": "Individual Contributor",
+        "description": "Implemented tooling, code changes, and docuemntation"
+      }
+    ],
+    "company": "Highspot",
+    "team": "Analytics Observability",
+    "start_date": "04-01-2026",
+    "current_project": true,
+    "summary": "Designed and implementd a cost effective security-complaint end-to-end operational and business observability platform for a customer facing enterprise analytics platform.",
+    "challenges": [
+      "Updating existing observability tooling to support new requirements",
+      "Obtaining high level SLAs from the business",
+      "Estimating cost and benefits of the project"
+    ],
+    "lessons_learned": [],
+    "scale_and_scope": [
+      "Worked without a team or manager",
+      "Worked across 3 teams at once",
+      "Create SLAs that drive observabiity requirements",
+      "Document platform observabiity requirements",
+      "Audit existing observability tooling and practices",
+      "Identify and document observability gaps",
+      "Document & Train developers on observability best practices"
+    ],
+    "measurable_results": [
+      "98% reduction in monthly Snowflake Telemetry Egress costs",
+      "90% redution in data piplline triage time",
+      "90% reduction in perfromance triage time",
+      "94% improvemnet to telemetry freshness",
+      "60% reduction in false critical alerts",
+      "Leadership can view real time business metrics"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "Open Telemetry",
+      "New Relic",
+      "Snowflake",
+      "TypeScript",
+      "Python"
+    ],
+    "tags": [
+      "observability",
+      "reliability",
+      "technical documentation",
+      "developer training",
+      "security"
+    ]
+  },
+  {
+    "order": 1,
+    "name": "Org-wide Observability Framework",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Tech Lead",
+        "description": "Identified a gap, became a subject matter expert, got project sign off from leadership, created a pillar wide process and framework to close the gap."
+      }
+    ],
+    "company": "Highspot",
+    "team": "Analytics Observability",
+    "start_date": "02-01-2026",
+    "end_date": "03-31-2026",
+    "current_project": false,
+    "summary": "Created a new project framework to drive observability requirements gathering and implementation after identifying a major process gap",
+    "challenges": [
+      "Documenting the finacial benifits of observability",
+      "Becomeing an observability expert quickly",
+      "Auditing existing observability tooling and practices"
+    ],
+    "lessons_learned": [
+      "Clearly defined SLAs have massive project planning and execution benefits",
+      "Observability requiremnets influence software architecture decisions"
+    ],
+    "scale_and_scope": [
+      "I worked without a team or manager",
+      "Changed the way all engineering projects are planned and executed",
+      "Company leadership newly invested in quality observability"
+    ],
+    "measurable_results": [
+      "Company wide project planning process changes",
+      "Company wide security policy improvements",
+      "Generated multiple high value spinoff projects",
+      "Engineering culture shift to prioritize observability",
+      "Became a company wide subject matter expert on observability"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "Open Telemetry",
+      "New Relic",
+      "Snowflake",
+      "Kubernetes",
+      "AWS"
+    ],
+    "tags": [
+      "observability",
+      "analytics",
+      "developer training"
+    ]
+  },
+  {
+    "order": 2,
+    "name": "Platform Accessability Tooling",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Project Manager",
+        "description": "Gathered requirements from stakeholders, wrote a spec, estimated dev time, obtained project approval.  Coordinated with other teams to fix upstream accessibility issues.  Drove continued attention and support past the original project."
+      },
+      {
+        "type": "Subject Matter Expert",
+        "description": "Provided accessability technical expertise and guidance for all teams."
+      },
+      {
+        "type": "Individual Contributor",
+        "description": "Worked alone to audit and fix accessibility issues in the analytics views."
+      }
+    ],
+    "company": "Highspot",
+    "team": "Analytics Data Visualization",
+    "start_date": "09-01-2025",
+    "end_date": "10-31-2025",
+    "current_project": false,
+    "summary": "Lead a platform initiative to improve app accesaability for analytics views.",
+    "challenges": [
+      "Implementing meaningfull accessability improvments beyond minimum complaince requirements",
+      "Implementing proceses to prevent future accessability regressions",
+      "Driving ongoing accessability efforts across the company",
+      "Showing business value beyond 'checking a box'"
+    ],
+    "lessons_learned": [
+      "Accessability drives highly maintainable code patterns",
+      "Significant business value can be acchievd with acessability tooling",
+      "UI test frameworks benifit greatly from accessability complaint UIs",
+      "Generative AI tools benifit greatly from accessability complaint UIs"
+    ],
+    "scale_and_scope": [
+      "Lead a team of 2 engineers to audit and fix accessibility issues in the analytics views",
+      "Cordinated upstream changes across teams",
+      "Company wide visability and pattern addoption"
+    ],
+    "measurable_results": [
+      "Made our analytics views funtional for the visually impared",
+      "Signed new customers that required accessability compliance",
+      "Expanded potential customer base by passing complaince requirements",
+      "Reduced UI test automation maintenance and development costs",
+      "Eanbled improved genrative AI tooling for devlopers and designers"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "A11y",
+      "Typescript Linter",
+      "TypeScript",
+      "React",
+      "Accessability Borwser Tools"
+    ],
+    "tags": [
+      "accessability",
+      "analytics",
+      "data-visualization",
+      "cross-team coordination",
+      "subject matter expert"
+    ]
+  },
+  {
+    "order": 3,
+    "name": "Dynamic Dashboard Generator",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Architect",
+        "description": "Designed the dynamic dashboard generator"
+      },
+      {
+        "type": "Individual Contributor",
+        "description": "Worked within a team of 2 to build and maintain the dynamic dashboard generator"
+      },
+      {
+        "type": "Project Manager",
+        "description": "Gathered requirements from stakeholders, wrote a spec, estimated dev time, obtained project approval"
+      }
+    ],
+    "company": "Highspot",
+    "team": "Analytics Data Visualization",
+    "start_date": "05-01-2024",
+    "end_date": "10-31-2024",
+    "current_project": false,
+    "summary": "Designed and implemented a dynamic analytics dashboard generator for the analytics platform.",
+    "challenges": [],
+    "lessons_learned": [],
+    "scale_and_scope": [],
+    "measurable_results": [],
+    "decisions_and_tradeoffs": [],
+    "technologies": []
+  },
+  {
+    "order": 4,
+    "name": "Client Side Data Aggregation",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Project Manager",
+        "description": "Gathered feature requirements from stakeholders, wrote a spec, estimated dev time, obtained project approval"
+      },
+      {
+        "type": "Architect",
+        "description": "Designed the bookmark rollup feature.  Integrated with a high risk "
+      },
+      {
+        "type": "Individual Contributor",
+        "description": "Implemented and documented the feature on my own"
+      }
+    ],
+    "company": "Highspot",
+    "team": "Analytics Data Visualization",
+    "start_date": "02-01-2024",
+    "end_date": "01-31-2025",
+    "current_project": false,
+    "summary": "Designed implemented customer facing and business critical high risk analytics features under a tight dealine.",
+    "challenges": [
+      "Project was restricted to client side only implementation",
+      "Project was inherited from a principle engineer",
+      "Original spec and design was incompatible with the hard deadline",
+      "Project was deemed critical for customer retention"
+    ],
+    "lessons_learned": [
+      "Clear requirements documets are critical to project success",
+      "Designing to a deadline leads to technical debt"
+    ],
+    "scale_and_scope": [
+      "Extremely high risk feature that impacts all platform queries and customer views",
+      "Bugs or outages significantly impact customer retention and platform adoption"
+    ],
+    "measurable_results": [
+      "Shipped within the original deadline",
+      "Feature directly influenced the retention of a large customer",
+      "Notable increase in platform adoption rates"
+    ],
+    "decisions_and_tradeoffs": [
+      "Significant design compromises were made to meet the deadline that impacted feature flexiblity but massivly sped development.  This ended up being the correct buiness desciion."
+    ],
+    "technologies": [
+      "TypeScript",
+      "GraphQL",
+      "SQL",
+      "PostgreSQL",
+      "React"
+    ],
+    "tags": [
+      "analytics",
+      "data aggregation",
+      "architecture",
+      "project management"
+    ]
+  },
+  {
+    "order": 5,
+    "name": "Analytics Template Upgrade Service",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Architect",
+        "description": "Identified the problme and designed the solution"
+      },
+      {
+        "type": "Individual Contributor",
+        "description": "Senior Software Engineer"
+      }
+    ],
+    "company": "Highspot",
+    "team": "Analytics Data Visualization",
+    "start_date": "08-01-2022",
+    "end_date": "01-31-2024",
+    "current_project": false,
+    "summary": "Designed an implemeted a service for automatically updating customer templates, filters, and queries after schema changes and created a change management framework to support it",
+    "challenges": [
+      "Service and Framework awareness and documentaion",
+      "Rollback procedures and customer notification",
+      "Schema upgrade coordination across teams",
+      "Change validation and testing"
+    ],
+    "lessons_learned": [
+      "Documenttaion and training are critical for service success",
+      "Developer guardrails are critical for enforcing framework ussage"
+    ],
+    "scale_and_scope": [
+      "Critical analytics platform feature impacting product quality for all users",
+      "Service is updated weekly to support schema changes"
+    ],
+    "measurable_results": [
+      "Reduced customer reported bugs by 60%",
+      "Improved certain bug type fix times by 50%",
+      "Reduced manule testing for schema changes by 80%"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "TypeScript"
+    ],
+    "tags": [
+      "analytics",
+      "templates",
+      "versioning",
+      "developer tooling"
+    ]
+  },
+  {
+    "order": 6,
+    "name": "Customizable Analytics Dashboard Template Platform",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Project Manager",
+        "description": "Gathered requirements from stakeholders, wrote a spec, estimated dev time, obtained project approval"
+      },
+      {
+        "type": "Architect",
+        "description": "Designed the customer facing analytics view templating system"
+      },
+      {
+        "type": "Individual Contributor",
+        "description": "Worked within a team of 2 to build and maintain the templating system"
+      }
+    ],
+    "company": "Highspot",
+    "team": "Analytics Data Visualization",
+    "start_date": "03-01-2022",
+    "end_date": "01-31-2023",
+    "current_project": false,
+    "summary": "Architected and helped build a templating platform for user configurable analytics dashboards.",
+    "challenges": [
+      "Templating system needed to be highly flexible for unknown future feature integration",
+      "Platform needed to be visualization libray agnostic",
+      "Platform needed to support a legacy and new analytics data platform"
+    ],
+    "lessons_learned": [
+      "Seperation of responsibilities is critical for platform maintainability",
+      "Code organization and documentation significantly speeds development and lower maintanace costs",
+      "Observabiity is critical for measureing platform performance and project success",
+      "Do not be afarid to push for requrements changes that might improve the product"
+    ],
+    "scale_and_scope": [
+      "The templating platform current runs all of Highspot's anlytics views",
+      "Added significant user facing features and value to the platform",
+      "Drove significant platform addoption and revenue growth",
+      "Massive reduction in view creation and maintenance costs"
+    ],
+    "measurable_results": [],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "TypeScript",
+      "React",
+      "MongoDB",
+      "SQL",
+      "Ruby",
+      "REST API"
+    ],
+    "tags": [
+      "analytics",
+      "data-visualization",
+      "platform architecture",
+      "accessability",
+      "multi language"
+    ]
+  },
+  {
+    "order": 7,
+    "name": "Data Normalizatin Service",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Individual Contributor",
+        "description": "Senior Software Engineer"
+      }
+    ],
+    "company": "Wrench",
+    "team": "Platform",
+    "start_date": "05-01-2021",
+    "end_date": "03-01-2022",
+    "current_project": false,
+    "summary": "Desigend and created a service to collect automotive repair data from multiple APIs, normalize it, and serve it.",
+    "challenges": [
+      "Complex data normalizatin",
+      "Bad data detection",
+      "Data conflict resolution",
+      "Cache lifeycle management"
+    ],
+    "lessons_learned": [
+      "Doing this right requires the creation of a new data set",
+      "Upstream API dependencies limit your service's reliability"
+    ],
+    "scale_and_scope": [
+      "Core service for customer support and automated service quoting",
+      "Data acuracy is critical for revenue generation and customer satisfaction"
+    ],
+    "measurable_results": [
+      "20% improvement to service pricing acuracy",
+      "10% reduction in technician job time",
+      "40% fewer 'bad' automated quotes"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "Java",
+      "REST API",
+      "Spring"
+    ],
+    "tags": [
+      "backend",
+      "automotive",
+      "mobile"
+    ]
+  },
+  {
+    "order": 8,
+    "name": "Devops Tooling",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Individual Contributor",
+        "description": "Senior Software Engineer"
+      }
+    ],
+    "company": "Wrench",
+    "team": "Platform",
+    "start_date": "11-01-2019",
+    "end_date": "11-01-2020",
+    "current_project": false,
+    "summary": "Implemented scripts and tools for high availablility internationl enterpirse software deployment and configuration management",
+    "challenges": [
+      "Small startup with very complex infrastructure and deployment requirements"
+    ],
+    "lessons_learned": [
+      "Kill problems dead before moving on for long term benifit"
+    ],
+    "scale_and_scope": [
+      "Responsible for any and all production systems"
+    ],
+    "measurable_results": [
+      "Fully automated 2 hour deplyment process",
+      "Automated developer environment setup and tear down"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "Java",
+      "REST API",
+      "Spring"
+    ],
+    "tags": [
+      "backend",
+      "automotive",
+      "mobile"
+    ]
+  },
+  {
+    "order": 9,
+    "name": "Semiconductor Defect Analytics and Visualization Suite",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Individual Contributor",
+        "description": "Software Engineer"
+      }
+    ],
+    "company": "Systema",
+    "start_date": "07-01-2018",
+    "end_date": "09-01-2019",
+    "current_project": false,
+    "summary": "Semiconductor manufacturing defect data aggregation and visualization app for fast triage",
+    "challenges": [
+      "Highly complex data schema",
+      "Terrabytes of daily data production",
+      "Interactive wafer rendering pipeline with heat maps"
+    ],
+    "lessons_learned": [
+      "Data accessability and visualization can significantly cahnge a workflow"
+    ],
+    "scale_and_scope": [
+      "Critical quality control software for a leading global semiconductor manufacturer",
+      "Condensing terabyts of data into east to understand visualizations"
+    ],
+    "measurable_results": [
+      "Millions of dollars saved monthly from rapid production issue triage",
+      "Real time production data accessability for company leadership"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "Java",
+      "Spring",
+      "Angular",
+      "SQL",
+      "CAD",
+      "Web GL"
+    ],
+    "tags": [
+      "data analytics",
+      "manufacturing automatiom",
+      "java",
+      "observability",
+      "semiconductor fabrication",
+      "data visualization"
+    ]
+  },
+  {
+    "order": 10,
+    "name": "High Precision Indoor Camera Based Tracking System",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Project Manager",
+        "description": "Technical Project Manager and Consultant"
+      }
+    ],
+    "company": "Hyperspace XR",
+    "start_date": "09-01-2017",
+    "end_date": "08-01-2018",
+    "current_project": false,
+    "summary": "Guided the development of inside-out tracking SDK",
+    "challenges": [
+      "User safety and reliability requirements",
+      "Complex camera calibration and tracking algorithms"
+    ],
+    "lessons_learned": [
+      "Highghly specialized software requires dedicated experts",
+      "Real time data systems are incredibly complex and expensieve or operate"
+    ],
+    "scale_and_scope": [],
+    "measurable_results": [
+      "80% reduction in tech stack features and complexity to beter suite the dev team size",
+      "Hyperspace offered a fully interactive AR (XR) exibit at the Pacific Science Center for many years"
+    ],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "C++",
+      "Python",
+      "Angular",
+      "SQL"
+    ],
+    "tags": [
+      "vr",
+      "leadership",
+      "consulting"
+    ]
+  },
+  {
+    "order": 11,
+    "name": "AWS Cloud Consulting",
+    "category": "professional",
+    "roles": [
+      {
+        "type": "Individual Contributor",
+        "description": "Software Engineer / Associate"
+      }
+    ],
+    "company": "Pariveda Solutions",
+    "start_date": "08-01-2015",
+    "end_date": "08-01-2018",
+    "summary": "Consulting engagements focused on AWS cloud migrations, infrastructure as code, performance validation, and full stack delivery.",
+    "challenges": [],
+    "lessons_learned": [],
+    "scale_and_scope": [],
+    "measurable_results": [],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "AWS",
+      "Java",
+      "Android",
+      "React",
+      "SQL",
+      "Python",
+      "C#"
+    ],
+    "tags": [
+      "aws",
+      "consulting",
+      "fullstack",
+      "devops"
+    ]
+  },
+  {
+    "order": 12,
+    "name": "Rockwell Collins Autonomous Drone",
+    "category": "educational",
+    "roles": [
+      {
+        "type": "Individual Contributor",
+        "description": "Engineering Capstone Project"
+      }
+    ],
+    "school": "Oregon State University",
+    "start_date": "09-01-2014",
+    "end_date": "06-01-2015",
+    "current_project": false,
+    "summary": "Senior design project at Oregon State University focused on autonomous drone programming.",
+    "challenges": [],
+    "lessons_learned": [],
+    "scale_and_scope": [],
+    "measurable_results": [],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "Python"
+    ],
+    "tags": [
+      "robotics",
+      "python",
+      "academic"
+    ]
+  },
+  {
+    "order": 13,
+    "name": "Oregon State Solar Vehicle Telemetry",
+    "category": "educational",
+    "roles": [
+      {
+        "type": "Project Manager",
+        "description": "Software Team Captain / Low Voltage Team Leader"
+      }
+    ],
+    "school": "Oregon State University",
+    "start_date": "08-01-2013",
+    "end_date": "04-01-2015",
+    "summary": "Led software and low-voltage telemetry systems for the Oregon State Solar Vehicle Team, including onboard computers, radios, and monitoring.",
+    "challenges": [],
+    "lessons_learned": [],
+    "scale_and_scope": [],
+    "measurable_results": [],
+    "decisions_and_tradeoffs": [],
+    "technologies": [
+      "Python",
+      "C#",
+      "Arduino",
+      "CANBus"
+    ],
+    "tags": [
+      "embedded",
+      "leadership",
+      "telemetry",
+      "academic"
+    ]
+  }
+]

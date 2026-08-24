@@ -1,0 +1,164 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[margin=0.65in, top=0.55in, bottom=0.55in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+
+\definecolor{accent}{HTML}{1D4ED8}
+\definecolor{accentlight}{HTML}{DBEAFE}
+\definecolor{ink}{HTML}{0F172A}
+\definecolor{muted}{HTML}{64748B}
+\definecolor{rulegray}{HTML}{CBD5E1}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=accent,
+  linkcolor=ink
+}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\titleformat{\section}
+  {\color{accent}\large\bfseries}
+  {}
+  {0em}
+  {}
+  [\vspace{-0.35em}{\color{rulegray}\titlerule[0.8pt]}\vspace{1.0em}]  % Increased spacing here
+
+\titlespacing*{\section}{0pt}{1.2em}{0pt}  % Increased the space above section header
+
+\setlist[itemize]{
+  leftmargin=1.15em,
+  itemsep=0.22em,
+  topsep=0.15em,
+  parsep=0pt,
+  label={\color{accent}\small\textbullet}
+}
+
+\newcommand{\contactsep}{\hspace{0.45em}{\color{rulegray}\textbar\hspace{0.45em}}}
+
+\newcommand{\jobblock}[4]{%
+  \vspace{0.55em}
+  \noindent
+  \begin{tabularx}{\textwidth}{@{}X r@{}}  % Ensure alignment
+    {\bfseries\color{ink}#1} & {\color{muted}\small #2} \\\  % Corrected line break
+    {\color{accent}\itshape #3} & {\color{muted}\small\bfseries #4} \\\  % Corrected line break
+  \end{tabularx}
+  \vspace{0.15em}
+}
+
+\newcommand{\skillrow}[2]{%
+  \noindent
+  {\color{accent}\bfseries\small #1}\par
+  {\color{ink}#2}\par\vspace{0.35em}
+}
+
+\begin{document}
+
+\noindent
+{\fontsize{26}{30}\selectfont\bfseries\color{ink} Loren Brown}\par
+\vspace{0.15em}
+{\large\color{accent} Senior Software Engineer}\par
+\vspace{0.55em}
+{\small\color{muted}
+  Seattle, WA
+  \contactsep
+  \href{mailto:lorenwbrown@gmail.com}{lorenwbrown@gmail.com}
+  \contactsep
+  (425) 389-9865
+  \contactsep
+  \href{https://www.linkedin.com/in/loren-brown/}{linkedin.com/in/loren-brown}
+}\par
+\vspace{0.45em}
+\noindent{\color{accentlight}\rule{\textwidth}{3pt}}\par
+
+\section*{Summary}
+\noindent
+Senior Software Engineer with 10+ years of full stack system design and development,
+specializing in data analytics pipelines, visualization platforms, and enterprise
+observability. Proven owner of cross-team initiatives delivering measurable org
+impact---including a 98\% reduction in telemetry costs, 90\% faster pipeline triage,
+and platform architecture powering all company analytics surfaces. Combines deep system
+design and root cause analysis with developer tooling, cross-functional alignment, and
+mentoring to ship maintainable, observable systems at scale.
+
+\section*{Experience}
+
+\jobblock{Highspot}{Seattle, WA}{Senior Software Engineer}{Mar 2022 -- Present}
+\begin{itemize}
+  \item Engineered customer-facing analytics pipelines, near real-time aggregation,
+    dynamic report generation, and observability platforms for enterprise customers.
+  \item Led end-to-end observability platform: \textbf{98\%} reduction in Snowflake
+    telemetry egress costs, \textbf{90\%} faster pipeline and performance triage,
+    \textbf{94\%} improvement in telemetry freshness, \textbf{60\%} fewer false critical
+    alerts, and real-time business metrics for leadership.
+  \item Architected analytics dashboard template platform powering all company analytics
+    views; built template upgrade service reducing customer-reported bugs by \textbf{60\%},
+    bug fix times by \textbf{50\%}, and manual schema testing by \textbf{80\%} for weekly
+    platform updates.
+  \item Drove platform accessibility initiative that signed compliance-driven customers,
+    expanded addressable market, and reduced UI test automation maintenance and
+    development costs.
+\end{itemize}
+
+\jobblock{Wrench}{Seattle, WA}{Senior Software Engineer}{Nov 2019 -- Mar 2022}
+\begin{itemize}
+  \item Delivered high-velocity platform features and DevOps tooling across a large
+    legacy codebase in a fast-paced startup environment.
+  \item Built data normalization service improving service pricing accuracy by \textbf{20\%},
+    reducing bad automated quotes by \textbf{40\%}, and cutting technician job time by
+    \textbf{10\%}.
+  \item Automated international enterprise deployment and developer environment setup
+    and teardown, reducing a \textbf{2-hour} manual deployment process to fully automated
+    workflows.
+\end{itemize}
+
+\jobblock{Systema}{Dresden, Germany}{Software Engineer}{Jul 2018 -- Sep 2019}
+\begin{itemize}
+  \item Built semiconductor manufacturing defect analytics and visualization suite for
+    fast production triage across terabytes of daily data.
+  \item \textbf{Saved millions} monthly through rapid issue identification and delivered real-time
+    production data visibility for company leadership via interactive wafer rendering
+    with heat maps.
+\end{itemize}
+
+\jobblock{Hyperspace XR}{Seattle, WA}{Technical Project Manager and Consultant}{Sep 2017 -- Aug 2018}
+\begin{itemize}
+  \item Guided development of inside-out camera-based tracking SDK for a multiplayer VR/AR
+    experience; reduced tech stack complexity by \textbf{80\%} while shipping a public AR
+    exhibit at Pacific Science Center.
+\end{itemize}
+
+\jobblock{Pariveda Solutions}{Seattle, WA}{Software Engineer}{Aug 2015 -- Aug 2018}
+\begin{itemize}
+  \item Executed IT consulting engagements spanning AWS cloud migrations, infrastructure
+    as code, performance validation, and full stack delivery for enterprise clients.
+  \item Led Fortune 500 AWS cloud migration, S3/Lambda performance testing, and edge
+    network child safety Android application delivery.
+\end{itemize}
+
+\section*{Education}
+\jobblock{Oregon State University}{Corvallis, OR}{B.S. Computer Science (Computer Systems)}{}
+\vspace{-0.25em}
+{\small\color{muted} Solar Vehicle Team Captain \textbar\ C/C++ Teaching Assistant}
+
+\section*{Skills}
+\begin{minipage}[t]{0.48\textwidth}
+  \skillrow{Languages}{TypeScript, JavaScript, Java, Python, SQL, C++, C\#}
+  \skillrow{Frameworks}{React, Angular, Spring, GraphQL, Node.js, Flutter}
+  \skillrow{Cloud \& Infrastructure}{AWS, Kubernetes, Docker, OpenTelemetry, CI/CD}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+  \skillrow{Databases}{PostgreSQL, MongoDB, Snowflake}
+  \skillrow{Practices}{Data visualization, observability, system architecture, developer tooling, automated testing}
+\end{minipage}
+
+\end{document}

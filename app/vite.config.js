@@ -9,7 +9,7 @@ const packagesDir = path.join(monorepoRoot, "packages");
 const nm = (name) => path.resolve(rootDir, "node_modules", name);
 
 export default defineConfig({
-  base: "/artificer/",
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: {
@@ -29,6 +29,26 @@ export default defineConfig({
   optimizeDeps: {
     include: ["ajv", "ajv-formats"],
   },
+  build: {
+    // Lazy timeline vendor (~567 kB) is deferred; keep the warning quiet for that.
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+          if (id.includes("pdfjs-dist")) return "pdfjs";
+          if (id.includes("vis-timeline") || id.includes("vis-data")) {
+            return "timeline";
+          }
+          if (id.includes("prismjs")) return "prism";
+          if (id.includes("@dnd-kit")) return "dnd";
+          if (id.includes("react-dom") || id.includes("/react/")) {
+            return "react";
+          }
+        },
+      },
+    },
+  },
   server: {
     host: "127.0.0.1",
     port: 5173,
@@ -42,6 +62,7 @@ export default defineConfig({
     environment: "jsdom",
     include: [
       "test/utils.test.js",
+      "test/browser-support.test.js",
       "test/latex-highlight.test.jsx",
       "test/agent-context.test.jsx",
       "test/agent-tab.test.jsx",

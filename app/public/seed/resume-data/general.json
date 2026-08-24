@@ -1,18 +1,55 @@
 {
-  "name": "Example Candidate",
-  "title": "Software Engineer",
-  "summary": "Example profile for a new Resume Builder workspace.",
+  "name": "Loren Brown",
+  "title": "Senior Software Engineer",
   "contact": {
-    "email": "example@example.com",
-    "location": "Remote"
+    "location": "Seattle, WA",
+    "phone": "(425) 389-9865",
+    "email": "lorenwbrown@gmail.com"
   },
-  "links": [],
-  "specialties": [],
-  "strengths": [],
-  "interests": [],
-  "disinterests": [],
+  "links": [
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/loren-brown/"
+    }
+  ],
+  "summary": "Senior Software Engineer with a decade of full stack system design and development experience, with a focus in data analytics and visualization pipelines. Passionate about collaborative design andsystem architecture.",
   "career_goals": {
-    "short_term": [],
-    "long_term": []
-  }
+    "short_term": [
+      "Become a Principal Software Engineer",
+      "Lead a team of engineers working on high impact projects",
+      "Mentor junior engineers"
+    ],
+    "long_term": [
+      "Own and manage large scale software projects",
+      "Build trust between engineering and non-engineering teams",
+      "Develop new lines of business throughh the conversion of internal "
+    ]
+  },
+  "specialties": [
+    "Full Stack Enterprise Web App Development",
+    "Data Analytics & Visualization Pipelines",
+    "Enterprise Software Observability"
+  ],
+  "strengths": [
+    "System Architecture and Design",
+    "Software Project Management",
+    "Root Cause Analysis",
+    "Technical Documentation",
+    "Code Organization & Maintainability"
+  ],
+  "interests": [
+    "Data Driven Decision Making",
+    "Practical and Ethical AI Integration",
+    "Developer Tooling & Automation",
+    "Test Driven Development",
+    "Low Level Programming",
+    "Open Source Software",
+    "Mesh Networking",
+    "Energy Systems",
+    "Distributed Systems"
+  ],
+  "disinterests": [
+    "Solo Development Environments",
+    "Non-technical Project Management"
+  ]
 }

@@ -2,7 +2,10 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   bindNewWorkspace,
   clearRootHandle,
+  createMemoryRoot,
+  ensureWorkspaceLayout,
   openOrRestoreWorkspace,
+  seedWorkspace,
 } from "@resume/filesystem-core";
 import { createResumeCore } from "@resume/resume-core";
 import { createPromptCore } from "@resume/prompt-core";
@@ -21,7 +24,11 @@ export function useWorkspace() {
   return ctx;
 }
 
-export function WorkspaceProvider({ children }) {
+/**
+ * @param {{ children: import("react").ReactNode, mode?: "full" | "lite" }} props
+ */
+export function WorkspaceProvider({ children, mode = "full" }) {
+  const isLite = mode === "lite";
   const [phase, setPhase] = useState("loading");
   const [error, setError] = useState("");
   const [root, setRoot] = useState(null);
@@ -34,6 +41,17 @@ export function WorkspaceProvider({ children }) {
     let cancelled = false;
     (async () => {
       try {
+        if (isLite) {
+          const handle = createMemoryRoot();
+          handle.name = "Lite (in memory)";
+          await ensureWorkspaceLayout(handle);
+          await seedWorkspace(handle, { force: true });
+          if (cancelled) return;
+          await boot(handle);
+          if (!cancelled) setPhase("ready");
+          return;
+        }
+
         const { handle } = await openOrRestoreWorkspace();
         if (cancelled) return;
         if (!handle) {
@@ -45,14 +63,14 @@ export function WorkspaceProvider({ children }) {
       } catch (err) {
         if (!cancelled) {
           setError(err.message || String(err));
-          setPhase("gate");
+          setPhase(isLite ? "loading" : "gate");
         }
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [isLite]);
 
   async function boot(handle) {
     setRoot(handle);
@@ -78,6 +96,7 @@ export function WorkspaceProvider({ children }) {
   }, [toolDefs]);
 
   async function openExisting() {
+    if (isLite) return;
     setBusy(true);
     setError("");
     try {
@@ -92,6 +111,7 @@ export function WorkspaceProvider({ children }) {
   }
 
   async function createNew() {
+    if (isLite) return;
     setBusy(true);
     setError("");
     try {
@@ -106,6 +126,7 @@ export function WorkspaceProvider({ children }) {
   }
 
   async function changeWorkspace() {
+    if (isLite) return;
     await clearRootHandle();
     if (toolDefs.length) await unregisterToolsOnWebMcp(toolDefs);
     setClientRuntime({});
@@ -125,11 +146,12 @@ export function WorkspaceProvider({ children }) {
       resume,
       prompts,
       toolDefs,
+      isLite,
       openExisting,
       createNew,
       changeWorkspace,
     }),
-    [phase, error, busy, root, resume, prompts, toolDefs],
+    [phase, error, busy, root, resume, prompts, toolDefs, isLite],
   );
 
   return (

@@ -10,6 +10,7 @@ import { createResumeHistory } from "../src/resumeHistory.js";
 import { createMemoryRoot } from "../../filesystem-core/test/memfs.js";
 import {
   writeTextFile,
+  readTextFile,
   ensureWorkspaceLayout,
 } from "../../filesystem-core/src/index.js";
 
@@ -159,6 +160,33 @@ describe("createResumeCore", () => {
       "\\documentclass{article}\\begin{document}Bye\\end{document}\n",
     );
     expect(stored.compiled).toBe(true);
+  });
+
+  it("auto-selects the first resume when .current is unset", async () => {
+    const { createResumeCore } = await import("../src/index.js");
+    const root = createMemoryRoot();
+    await ensureWorkspaceLayout(root);
+    await writeTextFile(
+      root,
+      ["resumes", "zeta.tex"],
+      "\\documentclass{article}\\begin{document}Z\\end{document}\n",
+    );
+    await writeTextFile(
+      root,
+      ["resumes", "alpha.tex"],
+      "\\documentclass{article}\\begin{document}A\\end{document}\n",
+    );
+
+    const api = await createResumeCore({ root });
+    const listed = await api.listResumes();
+    expect(listed.items).toEqual(["alpha.tex", "zeta.tex"]);
+    expect(listed.current).toBe("alpha.tex");
+
+    const status = await api.getPublicResumeStatus();
+    expect(status.current).toBe("alpha.tex");
+
+    const pointer = await readTextFile(root, ["app", ".current"]);
+    expect(pointer.trim()).toBe("alpha.tex");
   });
 
   it("strips private fields on public documents", async () => {

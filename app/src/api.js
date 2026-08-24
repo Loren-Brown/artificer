@@ -44,16 +44,23 @@ export async function storeResume(filename, content) {
 
 export function subscribePublicResumeWebhook(channel, onEvent) {
   const resume = getResumeApi();
-  const map = {
-    latex: "resume:updated",
-    pdf: "pdf:ready",
-    html: "resume:updated",
+  // LaTeX always follows resume:updated. PDF follows both pdf:ready (compile
+  // finished) and resume:updated (so previews refresh even if a listener missed
+  // pdf:ready, e.g. tab remount timing).
+  const events =
+    channel === "pdf"
+      ? ["pdf:ready", "resume:updated"]
+      : ["resume:updated"];
+  const unsubs = events.map((event) =>
+    resume.bus.on(event, () => {
+      onEvent?.({ type: channel });
+    }),
+  );
+  return {
+    close: () => {
+      for (const unsub of unsubs) unsub();
+    },
   };
-  const event = map[channel] || "resume:updated";
-  const unsub = resume.bus.on(event, () => {
-    onEvent?.({ type: channel });
-  });
-  return { close: () => unsub() };
 }
 
 export function subscribePublicResumeLatexWebhook(onEvent) {
@@ -93,7 +100,10 @@ export async function downloadPublicResumeLatex(filename = "resume.tex") {
 /** Object URL for PDF preview (caller should revoke). */
 export async function publicResumePdfPreviewUrl() {
   const bytes = await getResumeApi().getPublicResumePdfBytes();
-  const blob = new Blob([bytes], { type: "application/pdf" });
+  // Copy into a tight buffer so Blob/pdf.js never see a shared underlying ArrayBuffer.
+  const copy = new Uint8Array(bytes.byteLength);
+  copy.set(bytes);
+  const blob = new Blob([copy], { type: "application/pdf" });
   return URL.createObjectURL(blob);
 }
 

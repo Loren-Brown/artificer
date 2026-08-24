@@ -1,1 +1,60 @@
-[]
+[
+  {
+    "order": 0,
+    "type": "university",
+    "name": "Oregon State University",
+    "location": "Corvallis, OR",
+    "program_name": "Computer Systems",
+    "degree": "Bachelor of Science in Computer Science",
+    "graduation_date": "05-01-2015",
+    "start_date": "09-01-2012",
+    "end_date": "05-01-2015",
+    "contact": {
+      "address": "1500 SW Jefferson Way, Corvallis, OR 97331",
+      "website": "https://oregonstate.edu/",
+      "phone": "(541) 737-1000"
+    },
+    "highlights": [
+      "Solar Vehicle Team Captain",
+      "C/C++ Teaching Assistant"
+    ]
+  },
+  {
+    "order": 1,
+    "type": "university",
+    "name": "University of Washington",
+    "location": "Seattle, WA",
+    "program_name": "Computer Science",
+    "start_date": "09-01-2011",
+    "end_date": "06-01-2012",
+    "contact": {
+      "address": "1410 NE Campus Pkwy, Seattle, WA 98195",
+      "website": "https://www.washington.edu/",
+      "phone": "(206) 543-2100"
+    }
+  },
+  {
+    "order": 2,
+    "type": "community_college",
+    "name": "Clark College",
+    "location": "Vancouver, WA",
+    "program_name": "Running Start",
+    "start_date": "09-01-2009",
+    "end_date": "06-01-2011",
+    "contact": {
+      "address": "1933 Fort Vancouver Way, Vancouver, WA 98663",
+      "website": "https://www.clark.edu/",
+      "phone": "(360) 992-2000"
+    }
+  },
+  {
+    "order": 3,
+    "type": "high_school",
+    "name": "Mountain View High School",
+    "start_date": "09-01-2007",
+    "end_date": "06-01-2011",
+    "contact": {
+      "location": "Vancouver, WA"
+    }
+  }
+]

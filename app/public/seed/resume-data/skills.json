@@ -1,9 +1,189 @@
 {
   "categories": [
     {
-      "name": "Languages",
       "order": 0,
-      "items": [{ "name": "TypeScript", "order": 0 }]
+      "name": "Languages",
+      "items": [
+        {
+          "name": "TypeScript / JavaScript",
+          "tags": [
+            "frontend",
+            "backend",
+            "fullstack"
+          ]
+        },
+        {
+          "name": "Java",
+          "tags": [
+            "backend",
+            "fullstack"
+          ]
+        },
+        {
+          "name": "Python",
+          "tags": [
+            "backend",
+            "scripting",
+            "data"
+          ]
+        },
+        {
+          "name": "SQL",
+          "tags": [
+            "data",
+            "backend"
+          ]
+        },
+        {
+          "name": "C++",
+          "tags": [
+            "systems",
+            "embedded"
+          ]
+        },
+        {
+          "name": "C#",
+          "tags": [
+            "backend",
+            "desktop"
+          ]
+        },
+        {
+          "name": "Clojure",
+          "tags": [
+            "backend"
+          ]
+        }
+      ]
+    },
+    {
+      "order": 1,
+      "name": "Frameworks & Libraries",
+      "items": [
+        {
+          "name": "Angular",
+          "tags": [
+            "frontend"
+          ]
+        },
+        {
+          "name": "React",
+          "tags": [
+            "frontend"
+          ]
+        },
+        {
+          "name": "Spring",
+          "tags": [
+            "backend",
+            "java"
+          ]
+        },
+        {
+          "name": "Flutter",
+          "tags": [
+            "mobile"
+          ]
+        },
+        {
+          "name": "GraphQL",
+          "tags": [
+            "api",
+            "fullstack"
+          ]
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "name": "Platforms & Infrastructure",
+      "items": [
+        {
+          "name": "AWS",
+          "tags": [
+            "cloud",
+            "devops"
+          ]
+        },
+        {
+          "name": "SQL databases",
+          "tags": [
+            "data",
+            "backend"
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "name": "Practices & Domains",
+      "items": [
+        {
+          "name": "Full stack web development",
+          "tags": [
+            "fullstack"
+          ]
+        },
+        {
+          "name": "High availability system design",
+          "tags": [
+            "architecture",
+            "reliability"
+          ]
+        },
+        {
+          "name": "Data visualization",
+          "tags": [
+            "analytics",
+            "data-visualization"
+          ]
+        },
+        {
+          "name": "Software observability",
+          "tags": [
+            "observability",
+            "reliability"
+          ]
+        },
+        {
+          "name": "Developer tooling",
+          "tags": [
+            "tooling"
+          ]
+        },
+        {
+          "name": "Automated regression testing",
+          "tags": [
+            "testing",
+            "quality"
+          ]
+        },
+        {
+          "name": "System documentation",
+          "tags": [
+            "documentation"
+          ]
+        },
+        {
+          "name": "Embedded systems",
+          "tags": [
+            "embedded",
+            "systems"
+          ]
+        },
+        {
+          "name": "Analytics",
+          "tags": [
+            "analytics"
+          ]
+        },
+        {
+          "name": "Manufacturing process improvement",
+          "tags": [
+            "manufacturing"
+          ]
+        }
+      ]
     }
   ]
 }

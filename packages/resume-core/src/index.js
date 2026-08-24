@@ -12,6 +12,7 @@ import {
   pathExists,
   readBinaryFile,
   readTextFile,
+  removeFile,
   writeBinaryFile,
   writeTextFile,
 } from "../../filesystem-core/src/index.js";
@@ -32,6 +33,17 @@ async function writeCurrentName(root, name) {
   await writeTextFile(root, ["app", ".current"], `${name}\n`);
 }
 
+/** Prefer app/.current; if unset, pick the first sorted .tex under resumes/ and persist it. */
+async function resolveCurrentName(root) {
+  const existing = await readCurrentName(root);
+  if (existing) return existing;
+  const names = await listNames(root, ["resumes"], { files: true });
+  const first = names.find((n) => /\.tex$/i.test(n));
+  if (!first) return null;
+  await writeCurrentName(root, first);
+  return first;
+}
+
 /**
  * Create the in-browser resume API for the SPA.
  * @param {{ root: FileSystemDirectoryHandle }} options
@@ -46,7 +58,7 @@ export async function createResumeCore({ root }) {
   }
 
   async function compileCurrent() {
-    const current = await readCurrentName(root);
+    const current = await resolveCurrentName(root);
     if (!current) {
       return {
         compiled: false,
@@ -91,7 +103,7 @@ export async function createResumeCore({ root }) {
   }
 
   async function getStatus() {
-    const current = await readCurrentName(root);
+    const current = await resolveCurrentName(root);
     if (!current) {
       return { current: null, file: null, pdf: null };
     }
@@ -112,7 +124,7 @@ export async function createResumeCore({ root }) {
 
     async listResumes() {
       const items = await listTexFiles();
-      const current = await readCurrentName(root);
+      const current = await resolveCurrentName(root);
       return { items, current };
     },
 
@@ -121,7 +133,7 @@ export async function createResumeCore({ root }) {
     },
 
     async getPublicResumeText() {
-      const current = await readCurrentName(root);
+      const current = await resolveCurrentName(root);
       if (!current) {
         throw httpError(404, "No resume selected");
       }
@@ -156,10 +168,26 @@ export async function createResumeCore({ root }) {
       const text = sanitizeLatexContent(content);
       await writeTextFile(root, ["resumes", safe], text);
       await history.push(safe, text);
-      const current = await readCurrentName(root);
+      const current = await resolveCurrentName(root);
       if (current === safe) {
         const compiled = await compileCurrent();
         bus.emit("resume:updated", { current: safe });
+        if (compiled.compiled === false) {
+          // Drop stale PDF so the UI cannot keep showing an outdated preview.
+          const pdfName = safe.replace(/\.tex$/i, ".pdf");
+          try {
+            if (await pathExists(root, ["app", "compiled", pdfName], "file")) {
+              await removeFile(root, ["app", "compiled", pdfName]);
+            }
+          } catch {
+            /* ignore */
+          }
+          bus.emit("pdf:ready", { file: null, current: safe });
+          const err = new Error(compiled.error || "Compile failed");
+          err.status = 422;
+          err.body = { name: safe, file: safe, ...compiled };
+          throw err;
+        }
         return { name: safe, file: safe, ...compiled };
       }
       bus.emit("resume:updated", { current });
@@ -167,7 +195,7 @@ export async function createResumeCore({ root }) {
     },
 
     async updateSelectedResume(content, filenameHeader) {
-      const current = await readCurrentName(root);
+      const current = await resolveCurrentName(root);
       if (!current) throw httpError(400, "No resume selected");
       if (filenameHeader) {
         const safe = sanitizeLatexFileName(filenameHeader);
@@ -179,13 +207,13 @@ export async function createResumeCore({ root }) {
     },
 
     async getResumeHistory(name) {
-      const current = name || (await readCurrentName(root));
+      const current = name || (await resolveCurrentName(root));
       if (!current) throw httpError(400, "No resume selected");
       return history.meta(sanitizeLatexFileName(current));
     },
 
     async undoResume(name) {
-      const current = name || (await readCurrentName(root));
+      const current = name || (await resolveCurrentName(root));
       const safe = sanitizeLatexFileName(current);
       const moved = await history.undo(safe);
       await writeTextFile(root, ["resumes", safe], moved.content);
@@ -202,7 +230,7 @@ export async function createResumeCore({ root }) {
     },
 
     async redoResume(name) {
-      const current = name || (await readCurrentName(root));
+      const current = name || (await resolveCurrentName(root));
       const safe = sanitizeLatexFileName(current);
       const moved = await history.redo(safe);
       await writeTextFile(root, ["resumes", safe], moved.content);
@@ -268,7 +296,7 @@ export async function createResumeCore({ root }) {
     async compileSelectedResume() {
       const compiled = await compileCurrent();
       bus.emit("resume:updated", {
-        current: compiled.current || (await readCurrentName(root)),
+        current: compiled.current || (await resolveCurrentName(root)),
       });
       if (compiled.compiled === false) {
         const err = new Error(compiled.error || "Compile failed");
