@@ -1,0 +1,20 @@
+{
+  "name": "resume",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "npm run test:packages && npm run app:test",
+    "test:packages": "vitest run",
+    "test:packages:watch": "vitest",
+    "app:dev": "npm --prefix app run client",
+    "app:build": "npm --prefix app run build",
+    "app:preview": "npm --prefix app run preview",
+    "app:test": "npm --prefix app test",
+    "app:test:watch": "npm --prefix app run test:watch",
+    "app:lint": "npm --prefix app run lint"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "vitest": "^3.2.3"
+  }
+}

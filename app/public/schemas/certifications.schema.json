@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "certifications.schema.json",
+  "title": "Certifications",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["name", "order"],
+    "properties": {
+      "name": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "order": {
+        "$ref": "common.schema.json#/$defs/sortOrder"
+      },
+      "issuer": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "issued_date": {
+        "$ref": "common.schema.json#/$defs/calendarDate"
+      },
+      "expired_date": {
+        "$ref": "common.schema.json#/$defs/calendarDate"
+      },
+      "url": {
+        "type": "string",
+        "format": "uri"
+      },
+      "tags": {
+        "$ref": "common.schema.json#/$defs/tagList"
+      }
+    }
+  }
+}

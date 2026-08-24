@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "experience.schema.json",
+  "title": "Experience",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["company", "title", "start_date", "current", "order"],
+    "properties": {
+      "order": {
+        "$ref": "common.schema.json#/$defs/sortOrder"
+      },
+      "company": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "title": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "teams": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "uniqueItems": true,
+        "description": "Teams or organization units within the company for this role"
+      },
+      "location": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "start_date": {
+        "$ref": "common.schema.json#/$defs/calendarDate"
+      },
+      "end_date": {
+        "$ref": "common.schema.json#/$defs/calendarDate"
+      },
+      "current": {
+        "type": "boolean",
+        "description": "True when this is a current role"
+      },
+      "summary": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "skills": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Skills demonstrated or developed in this role"
+      },
+      "silent_tags": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "uniqueItems": true,
+        "description": "ATS/scraper keywords that humans should not see on a generated resume"
+      },
+      "languages": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Programming and query languages used in this role"
+      },
+      "frameworks": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Libraries and frameworks used in this role"
+      },
+      "platforms": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Cloud, infrastructure, data, and runtime platforms used in this role"
+      },
+      "tools": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Tools, protocols, and other technologies used in this role"
+      },
+      "projects": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "uniqueItems": true,
+        "description": "Project names from projects.json associated with this role"
+      },
+      "committees": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "uniqueItems": true,
+        "description": "Committees, working groups, or cross-org initiatives for this role"
+      }
+    },
+    "if": {
+      "properties": {
+        "current": {
+          "const": false
+        }
+      },
+      "required": ["current"]
+    },
+    "then": {
+      "required": ["end_date"],
+      "properties": {
+        "end_date": {
+          "$ref": "common.schema.json#/$defs/calendarDate"
+        }
+      }
+    }
+  }
+}

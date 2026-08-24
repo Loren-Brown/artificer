@@ -1,0 +1,9 @@
+{
+  "categories": [
+    {
+      "name": "Languages",
+      "order": 0,
+      "items": [{ "name": "TypeScript", "order": 0 }]
+    }
+  ]
+}

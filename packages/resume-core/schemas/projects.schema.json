@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "projects.schema.json",
+  "title": "Projects",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "name",
+      "category",
+      "order",
+      "challenges",
+      "_challenges",
+      "lessons_learned",
+      "scale_and_scope",
+      "measurable_results",
+      "decisions_and_tradeoffs",
+      "technologies"
+    ],
+    "properties": {
+      "name": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "order": {
+        "$ref": "common.schema.json#/$defs/sortOrder"
+      },
+      "_name": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString",
+        "description": "Internal-only project codename or alias. For data/reference use only; never show in generated resumes or public output."
+      },
+      "_summary": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString",
+        "description": "Private project summary for your own reference. Never show in generated resumes or public output."
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "professional",
+          "hobby",
+          "volunteer",
+          "educational"
+        ]
+      },
+      "roles": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/projectRole"
+        },
+        "description": "Clarify what parts of the project you personally designed, built, or maintained."
+      },
+      "company": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString",
+        "description": "Optional link to an experience.company value"
+      },
+      "team": {
+        "type": "string",
+        "description": "Optional link to a value in experience.teams. When set, company+team must match an experience entry."
+      },
+      "school": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString",
+        "description": "Optional link to an education.name value"
+      },
+      "start_date": {
+        "$ref": "common.schema.json#/$defs/calendarDate"
+      },
+      "end_date": {
+        "$ref": "common.schema.json#/$defs/calendarDate"
+      },
+      "current_project": {
+        "type": "boolean",
+        "description": "True when this is an ongoing project"
+      },
+      "summary": {
+        "$ref": "common.schema.json#/$defs/nonEmptyString"
+      },
+      "bullets": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/bullet"
+        }
+      },
+      "challenges": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Public-facing challenges, framed positively for resume and portfolio use."
+      },
+      "_challenges": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Private challenge context for your own reference. Never show in generated resumes or public output."
+      },
+      "lessons_learned": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Takeaways and reflections from the project"
+      },
+      "_lessons_learned": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Private lessons for your own reference. Never show in generated resumes or public output."
+      },
+      "scale_and_scope": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Scale and scope signals for the system, such as user counts, data volume, or transaction frequency handled."
+      },
+      "measurable_results": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Share data-driven outcomes instead of simple task lists, such as \"Optimized search API – cut response time 60% for front-end display.\""
+      },
+      "decisions_and_tradeoffs": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Briefly explain why you chose specific architectural patterns or how you solved complex constraints."
+      },
+      "technologies": {
+        "type": "array",
+        "items": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": "Technologies used on the project"
+      },
+      "tags": {
+        "$ref": "common.schema.json#/$defs/tagList"
+      }
+    }
+  },
+  "$defs": {
+    "projectRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "type"],
+      "properties": {
+        "description": {
+          "$ref": "common.schema.json#/$defs/nonEmptyString",
+          "description": "What you personally designed, built, or maintained in this role."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Individual Contributor",
+            "Architect",
+            "Project Manager",
+            "Mentor",
+            "Tech Lead",
+            "Consultant",
+            "Team Lead",
+            "Designer",
+            "Researcher",
+            "Subject Matter Expert"
+          ]
+        }
+      }
+    }
+  }
+}

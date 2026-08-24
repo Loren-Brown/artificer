@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tagList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "uniqueItems": true
+    },
+    "bullet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "tags": {
+          "$ref": "#/$defs/tagList"
+        }
+      }
+    },
+    "calendarDate": {
+      "type": "string",
+      "pattern": "^(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])-\\d{4}$",
+      "description": "Calendar date in MM-DD-YYYY format"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Display order within a collection (lower values appear first)"
+    },
+    "calendarDateOrPresent": {
+      "type": "string",
+      "pattern": "^((0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])-\\d{4}|present)$",
+      "description": "MM-DD-YYYY or the literal present"
+    },
+    "year": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2100
+        },
+        {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        }
+      ],
+      "description": "Four-digit year as number or string"
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "address": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri"
+        },
+        "phone": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "url"
+      ],
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

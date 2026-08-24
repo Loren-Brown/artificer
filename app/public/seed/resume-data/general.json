@@ -1,0 +1,18 @@
+{
+  "name": "Example Candidate",
+  "title": "Software Engineer",
+  "summary": "Example profile for a new Resume Builder workspace.",
+  "contact": {
+    "email": "example@example.com",
+    "location": "Remote"
+  },
+  "links": [],
+  "specialties": [],
+  "strengths": [],
+  "interests": [],
+  "disinterests": [],
+  "career_goals": {
+    "short_term": [],
+    "long_term": []
+  }
+}
