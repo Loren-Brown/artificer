@@ -4,6 +4,7 @@ import { formatData } from "./format.js";
 import {
   listNames,
   pathExists,
+  publicAssetUrl,
   readTextFile,
   writeTextFile,
 } from "../../filesystem-core/src/index.js";
@@ -49,7 +50,7 @@ async function loadAjv() {
     "certifications",
   ];
   for (const name of names) {
-    const res = await fetch(`/schemas/${name}.schema.json`);
+    const res = await fetch(publicAssetUrl(`schemas/${name}.schema.json`));
     if (!res.ok) continue;
     const schema = await res.json();
     try {

@@ -60,7 +60,8 @@ var EngineStatus;
     EngineStatus[EngineStatus["Busy"] = 3] = "Busy";
     EngineStatus[EngineStatus["Error"] = 4] = "Error";
 })(EngineStatus = exports.EngineStatus || (exports.EngineStatus = {}));
-var ENGINE_PATH = '/swiftlatex/swiftlatexpdftex.js';
+/* Resolved relative to the document URL so Vite `base` (e.g. /artificer/) works. */
+var ENGINE_PATH = 'swiftlatex/swiftlatexpdftex.js';
 var CompileResult = /** @class */ (function () {
     function CompileResult() {
         this.pdf = undefined;

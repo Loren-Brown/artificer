@@ -1,7 +1,9 @@
 /**
- * SwiftLaTeX PDF compile via PdfTeXEngine (browser assets under /swiftlatex/).
+ * SwiftLaTeX PDF compile via PdfTeXEngine (browser assets under public/swiftlatex/).
  * PdfTeXEngine itself spawns a Worker for swiftlatexpdftex.js.
  */
+
+import { publicAssetUrl } from "../../filesystem-core/src/index.js";
 
 let engine = null;
 let enginePromise = null;
@@ -42,11 +44,12 @@ async function getEngine() {
   if (engine) return engine;
   if (enginePromise) return enginePromise;
   enginePromise = (async () => {
-    await loadScript("/swiftlatex/PdfTeXEngine.js");
+    const engineScript = publicAssetUrl("swiftlatex/PdfTeXEngine.js");
+    await loadScript(engineScript);
     const Engine = globalThis.PdfTeXEngine || globalThis.exports?.PdfTeXEngine;
     if (!Engine) {
       throw new Error(
-        "PdfTeXEngine not found. Ensure /swiftlatex/PdfTeXEngine.js is available.",
+        `PdfTeXEngine not found. Ensure ${engineScript} is available.`,
       );
     }
     const next = new Engine();
@@ -55,7 +58,7 @@ async function getEngine() {
     } catch (err) {
       throw new Error(
         err?.message ||
-          "SwiftLaTeX engine failed to start. Check /swiftlatex/swiftlatexpdftex.js and .wasm are served.",
+          `SwiftLaTeX engine failed to start. Check ${publicAssetUrl("swiftlatex/swiftlatexpdftex.js")} and .wasm are served.`,
       );
     }
     if (!next.isReady?.()) {

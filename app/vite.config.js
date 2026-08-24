@@ -9,6 +9,7 @@ const packagesDir = path.join(monorepoRoot, "packages");
 const nm = (name) => path.resolve(rootDir, "node_modules", name);
 
 export default defineConfig({
+  base: "/artificer/",
   plugins: [react()],
   resolve: {
     alias: {

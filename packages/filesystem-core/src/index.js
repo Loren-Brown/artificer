@@ -25,6 +25,13 @@ function pathLabel(segments) {
   return segments.filter(Boolean).join("/") || ".";
 }
 
+/** Resolve a public asset path against Vite's `base` (e.g. `/artificer/`). */
+export function publicAssetUrl(path) {
+  const base =
+    (typeof import.meta !== "undefined" && import.meta.env?.BASE_URL) || "/";
+  return `${base}${String(path).replace(/^\//, "")}`;
+}
+
 function openHandleDb() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(HANDLE_DB, 1);
@@ -273,48 +280,48 @@ export async function copyUrlToWorkspace(root, segments, url) {
 }
 
 const SEED_FILES = [
-  ["prompts", "BASE.md", "/seed/prompts/BASE.md"],
-  ["prompts", "README.md", "/seed/prompts/README.md"],
-  ["prompts", "editors", "EDITOR.md", "/seed/prompts/editors/EDITOR.md"],
+  ["prompts", "BASE.md", "seed/prompts/BASE.md"],
+  ["prompts", "README.md", "seed/prompts/README.md"],
+  ["prompts", "editors", "EDITOR.md", "seed/prompts/editors/EDITOR.md"],
   [
     "prompts",
     "editors",
     "Greg",
     "AGENT.md",
-    "/seed/prompts/editors/Greg/AGENT.md",
+    "seed/prompts/editors/Greg/AGENT.md",
   ],
   [
     "prompts",
     "reviewers",
     "REVIEWER.md",
-    "/seed/prompts/reviewers/REVIEWER.md",
+    "seed/prompts/reviewers/REVIEWER.md",
   ],
   [
     "prompts",
     "reviewers",
     "Default",
     "AGENT.md",
-    "/seed/prompts/reviewers/Default/AGENT.md",
+    "seed/prompts/reviewers/Default/AGENT.md",
   ],
-  ["prompts", "rollplay", "ROLLPLAY.md", "/seed/prompts/rollplay/ROLLPLAY.md"],
+  ["prompts", "rollplay", "ROLLPLAY.md", "seed/prompts/rollplay/ROLLPLAY.md"],
   [
     "prompts",
     "rollplay",
     "Default",
     "AGENT.md",
-    "/seed/prompts/rollplay/Default/AGENT.md",
+    "seed/prompts/rollplay/Default/AGENT.md",
   ],
-  ["resumes", "example.tex", "/seed/resumes/example.tex"],
-  ["resume-examples", "example.tex", "/seed/resume-examples/example.tex"],
-  ["resume-data", "general.json", "/seed/resume-data/general.json"],
-  ["resume-data", "skills.json", "/seed/resume-data/skills.json"],
-  ["resume-data", "experience.json", "/seed/resume-data/experience.json"],
-  ["resume-data", "education.json", "/seed/resume-data/education.json"],
-  ["resume-data", "projects.json", "/seed/resume-data/projects.json"],
+  ["resumes", "example.tex", "seed/resumes/example.tex"],
+  ["resume-examples", "example.tex", "seed/resume-examples/example.tex"],
+  ["resume-data", "general.json", "seed/resume-data/general.json"],
+  ["resume-data", "skills.json", "seed/resume-data/skills.json"],
+  ["resume-data", "experience.json", "seed/resume-data/experience.json"],
+  ["resume-data", "education.json", "seed/resume-data/education.json"],
+  ["resume-data", "projects.json", "seed/resume-data/projects.json"],
   [
     "resume-data",
     "certifications.json",
-    "/seed/resume-data/certifications.json",
+    "seed/resume-data/certifications.json",
   ],
 ];
 
@@ -326,7 +333,7 @@ export async function seedWorkspace(root, { force = false } = {}) {
 
   const errors = [];
   for (const entry of SEED_FILES) {
-    const url = entry[entry.length - 1];
+    const url = publicAssetUrl(entry[entry.length - 1]);
     const segments = entry.slice(0, -1);
     try {
       const exists = await pathExists(root, segments, "file");

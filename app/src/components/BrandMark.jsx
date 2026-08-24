@@ -8,7 +8,7 @@ export function BrandMark({ size = 43, className = "" }) {
     <span className={`brand-mark ${className}`.trim()} aria-hidden="true">
       <img
         className="app-brand-icon"
-        src="/logo.png"
+        src={`${import.meta.env.BASE_URL}logo.png`}
         alt=""
         width={size}
         height={size}

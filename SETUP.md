@@ -15,7 +15,7 @@ npm install --prefix app
 npm run app:dev
 ```
 
-- UI: http://127.0.0.1:5173
+- UI: http://127.0.0.1:5173/artificer/
 - First visit: pick or create a workspace folder (seeded with examples)
 
 From `app/` you can also run `npm run client` (or `npm run dev`).
