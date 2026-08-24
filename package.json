@@ -13,6 +13,10 @@
     "app:test:watch": "npm --prefix app run test:watch",
     "app:lint": "npm --prefix app run lint"
   },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1"
+  },
   "devDependencies": {
     "jsdom": "^29.1.1",
     "vitest": "^3.2.3"
