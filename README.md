@@ -103,6 +103,9 @@ Under `packages/` (Vite aliases `@resume/*`):
 
 ## TODO
 
+- [ ] Make the latex editable
+- [ ] Add an "Info" Tab
+- [ ] Add more LLM mode options
 - [ ] Harden BYOK tool interface (role allowlists; later: confirm writes / schema validation)
 - [ ] Imporve Example Resume Tools + CRUD
 - [ ] Improve UX for mobile

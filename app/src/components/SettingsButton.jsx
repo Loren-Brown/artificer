@@ -6,6 +6,11 @@ import {
   loadByokConfig,
   saveByokConfig,
 } from "@resume/agent-core";
+import {
+  LATEX_THEMES,
+  loadLatexTheme,
+  saveLatexTheme,
+} from "./latexThemes.js";
 
 function IconSettings() {
   return (
@@ -72,6 +77,7 @@ export function SettingsButton({
   const [error, setError] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
   const [revealKey, setRevealKey] = useState(false);
+  const [latexTheme, setLatexTheme] = useState(loadLatexTheme);
 
   const selectedProvider = useMemo(
     () =>
@@ -89,6 +95,7 @@ export function SettingsButton({
   useEffect(() => {
     if (open && !wasOpenRef.current) {
       setByokForm(emptyByokForm());
+      setLatexTheme(loadLatexTheme());
       setError("");
       setCopyStatus("");
       setRevealKey(false);
@@ -218,6 +225,32 @@ export function SettingsButton({
                   </button>
                 </>
               )}
+            </section>
+
+            <section className="settings-section">
+              <h4>LaTeX preview</h4>
+              <p className="muted">
+                Color theme for the resume LaTeX source view.
+              </p>
+              <div className="field">
+                <label htmlFor={`${formId}-latex-theme`}>Style</label>
+                <select
+                  id={`${formId}-latex-theme`}
+                  value={latexTheme}
+                  onChange={(e) => {
+                    const next = saveLatexTheme(e.target.value);
+                    setLatexTheme(next);
+                  }}
+                  data-tooltip="LaTeX color theme"
+                  aria-label="LaTeX color theme"
+                >
+                  {LATEX_THEMES.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </section>
 
             <section className="settings-section">

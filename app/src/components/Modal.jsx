@@ -1,5 +1,21 @@
 import { useEffect, useId, useRef } from "react";
 
+function IconClose() {
+  return (
+    <svg
+      className="btn-icon-svg"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        d="M6.7 5.3a1 1 0 0 0-1.4 1.4L10.58 12 5.3 17.3a1 1 0 1 0 1.4 1.4L12 13.42l5.3 5.28a1 1 0 0 0 1.4-1.4L13.42 12l5.28-5.3a1 1 0 0 0-1.4-1.4L12 10.58 6.7 5.3Z"
+      />
+    </svg>
+  );
+}
+
 export function Modal({ title, children, onClose, footer }) {
   const titleId = useId();
   const dialogRef = useRef(null);
@@ -55,11 +71,12 @@ export function Modal({ title, children, onClose, footer }) {
           <h3 id={titleId}>{title}</h3>
           <button
             type="button"
-            className="btn"
+            className="btn btn-icon"
             onClick={onClose}
-            data-tooltip="Close dialog"
+            data-tooltip="Close"
+            aria-label="Close"
           >
-            Close
+            <IconClose />
           </button>
         </div>
         <div className="modal-body">{children}</div>

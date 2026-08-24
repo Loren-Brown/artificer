@@ -2,7 +2,10 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { createPortal } from "react-dom";
 import { Modal } from "../components/Modal.jsx";
 import { ItemList } from "../components/ItemList.jsx";
-import { LATEX_THEMES } from "../components/latexThemes.js";
+import {
+  loadLatexTheme,
+  subscribeLatexTheme,
+} from "../components/latexThemes.js";
 import { timelineFromDatedItems } from "../components/timelineUtils.js";
 import { addPdfSelectionContext, setResumeFullscreen } from "../agentContext.js";
 import { parseDate, sortByOrderAsc, withIndex, collectOrderIssues, sortByDateDesc, formatDurationPlain, mergeIssueMaps, collectEmploymentDateIssues, employmentTimelineMarkers } from "../utils.js";
@@ -100,12 +103,13 @@ function FormModal({
           </button>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-icon"
             onClick={onSave}
             disabled={saving}
             data-tooltip={saving ? "Saving…" : "Save changes"}
+            aria-label={saving ? "Saving…" : "Save changes"}
           >
-            {saving ? "Saving…" : "Save"}
+            <IconSave />
           </button>
         </>
       }
@@ -127,6 +131,23 @@ function IconUndo() {
       <path
         fill="currentColor"
         d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+      />
+    </svg>
+  );
+}
+
+function IconSave() {
+  return (
+    <svg
+      className="btn-icon-svg"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M4 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8.828a2 2 0 0 0-.586-1.414l-4.828-4.828A2 2 0 0 0 15.172 2H4zm1 2h10v5H5V4zm2 10h10v6H7v-6z"
       />
     </svg>
   );
@@ -175,6 +196,22 @@ function IconMore() {
       <path
         fill="currentColor"
         d="M6 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm8 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm8 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
+      />
+    </svg>
+  );
+}
+
+function IconFolder() {
+  return (
+    <svg
+      className="btn-icon-svg"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"
       />
     </svg>
   );
@@ -252,28 +289,26 @@ export function ResumeTab() {
   const [error, setError] = useState("");
   const [downloading, setDownloading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [fileMenuOpen, setFileMenuOpen] = useState(false);
   const [saveAsOpen, setSaveAsOpen] = useState(false);
   const [saveAsName, setSaveAsName] = useState("");
   const [saveAsError, setSaveAsError] = useState("");
   const [saveAsNameWarning, setSaveAsNameWarning] = useState("");
   const [savingAs, setSavingAs] = useState(false);
   const menuRef = useRef(null);
+  const fileMenuRef = useRef(null);
   const [selecting, setSelecting] = useState(false);
   const [historyBusy, setHistoryBusy] = useState(false);
   const [compiling, setCompiling] = useState(false);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
-  const [latexTheme, setLatexTheme] = useState(() => {
-    try {
-      const saved = localStorage.getItem("resume-latex-theme");
-      if (saved === "dark" || saved === "light") return saved;
-    } catch {
-      /* ignore */
-    }
-    return "dark";
-  });
+  const [latexTheme, setLatexTheme] = useState(loadLatexTheme);
   const [previewFullscreen, setPreviewFullscreen] = useState(false);
   const previewPointerRef = useRef(null);
+
+  useEffect(() => {
+    return subscribeLatexTheme(setLatexTheme);
+  }, []);
 
   useEffect(() => {
     setResumeFullscreen(previewFullscreen);
@@ -291,15 +326,6 @@ export function ResumeTab() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [previewFullscreen]);
-
-  function onLatexThemeChange(next) {
-    setLatexTheme(next);
-    try {
-      localStorage.setItem("resume-latex-theme", next);
-    } catch {
-      /* ignore */
-    }
-  }
 
   const clearPdf = useCallback(() => {
     setHasPdf(false);
@@ -573,8 +599,27 @@ export function ResumeTab() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (!fileMenuOpen) return undefined;
+    function onPointerDown(event) {
+      if (fileMenuRef.current && !fileMenuRef.current.contains(event.target)) {
+        setFileMenuOpen(false);
+      }
+    }
+    function onKeyDown(event) {
+      if (event.key === "Escape") setFileMenuOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [fileMenuOpen]);
+
   function openSaveAs() {
     setMenuOpen(false);
+    setFileMenuOpen(false);
     setSaveAsError("");
     setSaveAsNameWarning("");
     const base = downloadBase || fileLabel?.replace(/\.tex$/i, "") || "resume";
@@ -718,22 +763,69 @@ export function ResumeTab() {
         <div className="panel-toolbar-start">
           <h2>Resume</h2>
           {pickerOptions.length > 0 ? (
-            <label className="resume-file-picker">
-              <span className="visually-hidden">Selected resume</span>
-              <select
-                value={pickerValue}
-                disabled={selecting || historyBusy || compiling}
-                onChange={(e) => onSelectResume(e.target.value)}
-                data-tooltip="Selected resume"
-                aria-label="Selected resume"
-              >
-                {pickerOptions.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <>
+              <label className="resume-file-picker">
+                <span className="visually-hidden">Selected resume</span>
+                <select
+                  value={pickerValue}
+                  disabled={selecting || historyBusy || compiling}
+                  onChange={(e) => onSelectResume(e.target.value)}
+                  data-tooltip="Selected resume"
+                  aria-label="Selected resume"
+                >
+                  {pickerOptions.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className="resume-menu resume-file-menu" ref={fileMenuRef}>
+                <button
+                  type="button"
+                  className="btn btn-icon"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setFileMenuOpen((open) => !open);
+                  }}
+                  disabled={selecting || historyBusy || compiling}
+                  aria-haspopup="menu"
+                  aria-expanded={fileMenuOpen}
+                  data-tooltip={pickerValue || "Select resume"}
+                  aria-label={
+                    pickerValue
+                      ? `Selected resume: ${pickerValue}`
+                      : "Select resume"
+                  }
+                >
+                  <IconFolder />
+                </button>
+                {fileMenuOpen ? (
+                  <div
+                    className="resume-menu-dropdown resume-menu-dropdown-start"
+                    role="menu"
+                  >
+                    {pickerOptions.map((name) => (
+                      <button
+                        key={name}
+                        type="button"
+                        role="menuitem"
+                        className={`resume-menu-item${
+                          name === pickerValue ? " is-active" : ""
+                        }`}
+                        disabled={selecting || historyBusy || compiling}
+                        onClick={() => {
+                          setFileMenuOpen(false);
+                          if (name !== pickerValue) onSelectResume(name);
+                        }}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            </>
           ) : null}
           {hasContent ? (
             <>
@@ -763,23 +855,6 @@ export function ResumeTab() {
         <div className="toolbar-actions">
           {hasContent ? (
             <>
-              {view === "latex" ? (
-                <label className="latex-theme-picker">
-                  <span className="visually-hidden">LaTeX color theme</span>
-                  <select
-                    value={latexTheme}
-                    onChange={(e) => onLatexThemeChange(e.target.value)}
-                    data-tooltip="LaTeX color theme"
-                    aria-label="LaTeX color theme"
-                  >
-                    {LATEX_THEMES.map((t) => (
-                      <option key={t.id} value={t.id}>
-                        {t.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ) : null}
               {view === "pdf" ? (
                 <button
                   type="button"
@@ -819,7 +894,10 @@ export function ResumeTab() {
                 <button
                   type="button"
                   className="btn btn-icon"
-                  onClick={() => setMenuOpen((open) => !open)}
+                  onClick={() => {
+                    setFileMenuOpen(false);
+                    setMenuOpen((open) => !open);
+                  }}
                   aria-haspopup="menu"
                   aria-expanded={menuOpen}
                   data-tooltip="More actions"
@@ -1069,12 +1147,17 @@ export function GeneralTab() {
         <div className="toolbar-actions">
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-icon"
             onClick={save}
             disabled={!data || !dirty || saving}
-            data-tooltip={dirty ? "Save profile" : "No changes to save"}
+            data-tooltip={
+              saving ? "Saving…" : dirty ? "Save profile" : "No changes to save"
+            }
+            aria-label={
+              saving ? "Saving…" : dirty ? "Save profile" : "No changes to save"
+            }
           >
-            {saving ? "Saving…" : "Save"}
+            <IconSave />
           </button>
         </div>
       </div>
@@ -1121,6 +1204,8 @@ function ArrayTab({
   const [modalError, setModalError] = useState("");
   const [mode, setMode] = useState(null); // { kind: 'create'|'edit', index?, item? }
   const [saving, setSaving] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const { setDraft, getDraft } = useDraft(null);
 
   const load = useCallback(async () => {
@@ -1136,6 +1221,24 @@ function ArrayTab({
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    function onPointerDown(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
+    function onKeyDown(event) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   const rows = sortByOrderAsc(withIndex(items));
   const orderIssues = collectOrderIssues(rows, sortDate);
@@ -1217,17 +1320,7 @@ function ArrayTab({
     <div className="panel">
       <div className="panel-toolbar">
         <h2>{title}</h2>
-        <div className="toolbar-actions">
-          {sortDate ? (
-            <button
-              type="button"
-              className="btn"
-              onClick={reorderByDate}
-              data-tooltip="Re-order list by date (newest first)"
-            >
-              Re-order by date
-            </button>
-          ) : null}
+        <div className="toolbar-actions toolbar-actions-list">
           <button
             type="button"
             className="btn btn-primary"
@@ -1240,6 +1333,36 @@ function ArrayTab({
           >
             {addLabel}
           </button>
+          {sortDate ? (
+            <div className="resume-menu" ref={menuRef}>
+              <button
+                type="button"
+                className="btn btn-icon"
+                onClick={() => setMenuOpen((open) => !open)}
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                data-tooltip="More actions"
+                aria-label="More actions"
+              >
+                <IconMore />
+              </button>
+              {menuOpen ? (
+                <div className="resume-menu-dropdown" role="menu">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="resume-menu-item"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      void reorderByDate();
+                    }}
+                  >
+                    Re-order by date
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </div>
       <div className="panel-body">
@@ -1295,7 +1418,7 @@ function ArrayTab({
 export function ExperienceTab() {
   return (
     <ArrayTab
-      title="Professional Experience"
+      title="Experience"
       type="experience"
       addLabel="Add experience"
       Form={ExperienceForm}
@@ -1529,18 +1652,20 @@ export function SkillsTab() {
     <div className="panel">
       <div className="panel-toolbar">
         <h2>Skills</h2>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => {
-            setDraft({ name: "", items: [{ name: "", tags: [] }] });
-            setModalError("");
-            setMode({ kind: "create" });
-          }}
-          data-tooltip="Add category"
-        >
-          Add category
-        </button>
+        <div className="toolbar-actions toolbar-actions-list">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => {
+              setDraft({ name: "", items: [{ name: "", tags: [] }] });
+              setModalError("");
+              setMode({ kind: "create" });
+            }}
+            data-tooltip="Add category"
+          >
+            Add category
+          </button>
+        </div>
       </div>
       <div className="panel-body">
         {error ? <div className="error-banner">{error}</div> : null}

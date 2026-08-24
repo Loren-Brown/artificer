@@ -40,6 +40,23 @@ function IconUndo() {
   );
 }
 
+function IconSave() {
+  return (
+    <svg
+      className="btn-icon-svg"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M4 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8.828a2 2 0 0 0-.586-1.414l-4.828-4.828A2 2 0 0 0 15.172 2H4zm1 2h10v5H5V4zm2 10h10v6H7v-6z"
+      />
+    </svg>
+  );
+}
+
 function IconRedo() {
   return (
     <svg
@@ -67,6 +84,22 @@ function IconMore() {
       <path
         fill="currentColor"
         d="M6 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm8 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm8 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
+      />
+    </svg>
+  );
+}
+
+function IconFolder() {
+  return (
+    <svg
+      className="btn-icon-svg"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"
       />
     </svg>
   );
@@ -112,6 +145,7 @@ function saveAsNameWarningFor(agents, role, raw, currentName) {
 export function AgentTab() {
   const titleId = useId();
   const menuRef = useRef(null);
+  const fileMenuRef = useRef(null);
   const historyRef = useRef({ stack: [""], index: 0 });
   const contentRef = useRef("");
   const applyingHistoryRef = useRef(false);
@@ -126,6 +160,7 @@ export function AgentTab() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [fileMenuOpen, setFileMenuOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [createRole, setCreateRole] = useState("editors");
   const [createName, setCreateName] = useState("");
@@ -220,6 +255,17 @@ export function AgentTab() {
   }
 
   const dirty = content !== savedContent;
+
+  function trySelectAgent(key) {
+    if (key === selectedKey) return false;
+    if (dirty) {
+      const ok = window.confirm("Discard unsaved changes to this agent?");
+      if (!ok) return false;
+    }
+    setSelectedKey(key);
+    return true;
+  }
+
   const selected = useMemo(() => {
     if (!selectedKey) return null;
     return agents.find((a) => promptApi.agentKey(a.role, a.name) === selectedKey) ?? null;
@@ -338,6 +384,24 @@ export function AgentTab() {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!fileMenuOpen) return undefined;
+    function onPointerDown(event) {
+      if (fileMenuRef.current && !fileMenuRef.current.contains(event.target)) {
+        setFileMenuOpen(false);
+      }
+    }
+    function onKeyDown(event) {
+      if (event.key === "Escape") setFileMenuOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [fileMenuOpen]);
 
   async function onSave() {
     if (!selected || !dirty || saving) return;
@@ -517,13 +581,7 @@ export function AgentTab() {
               value={selectedKey}
               disabled={loading || agents.length === 0 || deleting}
               onChange={(e) => {
-                if (dirty) {
-                  const ok = window.confirm(
-                    "Discard unsaved changes to this agent?",
-                  );
-                  if (!ok) return;
-                }
-                setSelectedKey(e.target.value);
+                trySelectAgent(e.target.value);
               }}
               data-tooltip="Selected agent"
               aria-label="Selected agent"
@@ -549,8 +607,72 @@ export function AgentTab() {
               })}
             </select>
           </label>
-        </div>
-        <div className="toolbar-actions">
+          <div className="resume-menu resume-file-menu" ref={fileMenuRef}>
+            <button
+              type="button"
+              className="btn btn-icon"
+              onClick={() => {
+                setMenuOpen(false);
+                setFileMenuOpen((open) => !open);
+              }}
+              disabled={loading || agents.length === 0 || deleting}
+              aria-haspopup="menu"
+              aria-expanded={fileMenuOpen}
+              data-tooltip={
+                selected
+                  ? `${selected.role} / ${selected.label || selected.name}`
+                  : "Select agent"
+              }
+              aria-label={
+                selected
+                  ? `Agent: ${selected.label || selected.name}`
+                  : "Select agent"
+              }
+            >
+              <IconFolder />
+            </button>
+            {fileMenuOpen ? (
+              <div
+                className="resume-menu-dropdown resume-menu-dropdown-start"
+                role="menu"
+              >
+                {TAB_ROLES.map((role) => {
+                  const group = agentsByRole.get(role) || [];
+                  if (!group.length) return null;
+                  return (
+                    <div key={role} className="resume-menu-group">
+                      <div className="resume-menu-group-label" role="presentation">
+                        {role}
+                      </div>
+                      {group.map((agent) => {
+                        const key = promptApi.agentKey(agent.role, agent.name);
+                        return (
+                          <button
+                            key={key}
+                            type="button"
+                            role="menuitem"
+                            className={`resume-menu-item${
+                              key === selectedKey ? " is-active" : ""
+                            }`}
+                            disabled={loading || deleting}
+                            onClick={() => {
+                              if (key === selectedKey) {
+                                setFileMenuOpen(false);
+                                return;
+                              }
+                              if (trySelectAgent(key)) setFileMenuOpen(false);
+                            }}
+                          >
+                            {agent.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
           <button
             type="button"
             className="btn btn-icon"
@@ -571,24 +693,38 @@ export function AgentTab() {
           >
             <IconRedo />
           </button>
+        </div>
+        <div className="toolbar-actions">
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-icon"
             onClick={onSave}
             disabled={!selected || !dirty || saving || loading || deleting}
             data-tooltip={
-              dirty
-                ? `Save agent prompt (${MOD_LABEL}S)`
-                : "No changes to save"
+              saving
+                ? "Saving…"
+                : dirty
+                  ? `Save agent prompt (${MOD_LABEL}S)`
+                  : "No changes to save"
+            }
+            aria-label={
+              saving
+                ? "Saving…"
+                : dirty
+                  ? `Save agent prompt (${MOD_LABEL}S)`
+                  : "No changes to save"
             }
           >
-            {saving ? "Saving…" : "Save"}
+            <IconSave />
           </button>
           <div className="resume-menu" ref={menuRef}>
             <button
               type="button"
               className="btn btn-icon"
-              onClick={() => setMenuOpen((open) => !open)}
+              onClick={() => {
+                setFileMenuOpen(false);
+                setMenuOpen((open) => !open);
+              }}
               disabled={loading || deleting || savingAs}
               aria-haspopup="menu"
               aria-expanded={menuOpen}

@@ -116,7 +116,10 @@ function AppShell() {
         <div className="app-brand">
           <BrandMark size={43} />
           <div className="app-brand-text">
-            <h1>Artificer</h1>
+            <h1>
+              Artificer
+              <span className="app-brand-section"> {current.label}</span>
+            </h1>
             <p className="app-brand-slogan">
               Enchanted resume builder{isLite ? " · Lite" : ""}
             </p>
@@ -148,7 +151,7 @@ function AppShell() {
         </Suspense>
       </div>
       <Suspense fallback={null}>
-        <AgentChat />
+        <AgentChat activeTabId={active} />
       </Suspense>
     </div>
   );

@@ -10,7 +10,7 @@ export const DATA_TYPE_TABS = [
   { id: "resume", label: "Resume" },
   { id: "agent", label: "Agent" },
   { id: "general", label: "General" },
-  { id: "experience", label: "Professional Experience" },
+  { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "certifications", label: "Certifications" },

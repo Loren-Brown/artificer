@@ -83,8 +83,9 @@ function emptyByokForm() {
 
 /**
  * Floating resume agent chat (in-browser BYOK + tools).
+ * Launcher is only shown on the resume tab.
  */
-export function AgentChat() {
+export function AgentChat({ activeTabId = "resume" }) {
   const [open, setOpen] = useState(false);
   const [panelMounted, setPanelMounted] = useState(false);
   const [panelAnimOpen, setPanelAnimOpen] = useState(false);
@@ -465,7 +466,8 @@ export function AgentChat() {
     ? `${agentMeta.role}${agentMeta.name ? ` / ${agentMeta.name}` : ""}`
     : null;
 
-  const showLauncher = !open && (!resumeFullscreen || minimized);
+  const showLauncher =
+    activeTabId === "resume" && !open && (!resumeFullscreen || minimized);
 
   return (
     <>

@@ -22,7 +22,7 @@ import { Modal } from "../../src/components/Modal.jsx";
  *
  * 2) Dialog overlay
  *    trigger button --opens--> dialog[aria-modal]
- *      Escape | "Close dialog" | "Close" --closes--> returns focus to trigger
+ *      Escape | "Close" | backdrop "Close dialog" --closes--> returns focus to trigger
  */
 
 function TabShell() {
@@ -70,7 +70,7 @@ describe("a11y navigation maps", () => {
 
     const resume = screen.getByRole("tab", { name: "Resume" });
     const experience = screen.getByRole("tab", {
-      name: "Professional Experience",
+      name: "Experience",
     });
     const projects = screen.getByRole("tab", { name: "Projects" });
     const education = screen.getByRole("tab", { name: "Education" });
@@ -143,7 +143,7 @@ describe("a11y navigation maps", () => {
       </Modal>,
     );
 
-    await user.click(screen.getByLabelText("Close dialog"));
+    await user.click(screen.getByRole("button", { name: "Close" }));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

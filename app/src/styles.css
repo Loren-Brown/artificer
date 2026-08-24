@@ -206,6 +206,14 @@ button {
   letter-spacing: -0.02em;
 }
 
+.app-brand-section {
+  display: none;
+  font-weight: 500;
+  font-size: 0.7em;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--slate-muted) 55%, #000);
+}
+
 .app-brand-slogan {
   margin: 0;
   color: var(--muted);
@@ -438,24 +446,36 @@ button {
 
 @media (max-width: 720px) {
   .panel-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .panel-toolbar-start,
-  .toolbar-actions {
-    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .panel-toolbar-start {
+    flex: 1 1 auto;
+    min-width: 0;
     flex-wrap: wrap;
   }
 
   .toolbar-actions {
+    flex: 0 1 auto;
     justify-content: flex-end;
-    padding-top: 0.15rem;
-    border-top: 1px solid var(--line);
+  }
+
+  .toolbar-actions-list {
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: stretch;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+  }
+
+  .toolbar-actions-list > .btn-primary {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .toolbar-actions-list .resume-menu {
+    flex: 0 0 auto;
   }
 
   .resume-file-picker select {
@@ -465,6 +485,14 @@ button {
   }
 
   .tabs {
+    display: none;
+  }
+
+  .app-brand-section {
+    display: inline;
+  }
+
+  .panel-toolbar h2 {
     display: none;
   }
 
@@ -790,10 +818,18 @@ button:focus-visible {
   color: var(--bg-abyssal-dark);
 }
 
+.btn-primary.btn-icon {
+  color: var(--starlight-white);
+}
+
 .btn-primary:hover {
   background: var(--neon-cyan);
   border-color: var(--neon-cyan);
   filter: none;
+}
+
+.btn-primary.btn-icon:hover {
+  color: var(--starlight-white);
 }
 
 .btn-danger {
@@ -943,6 +979,10 @@ button:focus-visible {
   position: relative;
 }
 
+.resume-file-menu {
+  display: none;
+}
+
 .resume-menu-dropdown {
   position: absolute;
   top: calc(100% + 0.3rem);
@@ -958,6 +998,25 @@ button:focus-visible {
   gap: 0.15rem;
 }
 
+.resume-menu-dropdown-start {
+  right: auto;
+  left: 0;
+}
+
+.resume-menu-group + .resume-menu-group {
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.resume-menu-group-label {
+  padding: 0.35rem 0.6rem 0.2rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .resume-menu-item {
   border: 0;
   background: transparent;
@@ -971,6 +1030,12 @@ button:focus-visible {
 
 .resume-menu-item:hover:not(:disabled) {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.resume-menu-item.is-active {
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--mana-glow) 40%, var(--line));
+  font-weight: 600;
 }
 
 .resume-menu-item:disabled {
@@ -1574,8 +1639,8 @@ button:focus-visible {
 /* Mobile touch targets — must follow base .btn / .btn-icon rules so they win. */
 @media (max-width: 720px) {
   .btn {
-    font-size: 1.5em;
-    padding: 0.675rem 1.275rem;
+    font-size: 1.25em;
+    padding: 0.5625rem 1.0625rem;
   }
 
   .btn.btn-icon,
@@ -1583,10 +1648,10 @@ button:focus-visible {
   .agent-chat-header-actions .btn-icon,
   .app-header-action.btn-icon,
   .resume-fullscreen-exit.btn-icon {
-    width: 3rem;
-    height: 3rem;
-    min-width: 3rem;
-    min-height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
     padding: 0;
     font-size: 1rem;
   }
@@ -1596,76 +1661,85 @@ button:focus-visible {
   .agent-chat-header-actions .btn-icon-svg,
   .app-header-action .btn-icon-svg,
   .resume-fullscreen-exit .btn-icon-svg {
-    width: 1.65rem;
-    height: 1.65rem;
+    width: 1.375rem;
+    height: 1.375rem;
   }
 
   .tab {
-    font-size: 1.5em;
-    padding: 0.675rem 1.275rem;
+    font-size: 1.25em;
+    padding: 0.5625rem 1.0625rem;
   }
 
   .resume-file-picker select,
   .latex-theme-picker select {
-    font-size: 1.35rem;
-    padding: 0.55rem 0.8rem;
-    min-height: 3rem;
+    font-size: 1.025rem;
+    padding: 0.4375rem 0.6875rem;
+    min-height: 2.5rem;
   }
 
   .resume-menu-item {
-    font-size: 1.5em;
-    padding: 0.675rem 0.9rem;
+    font-size: 1.25em;
+    padding: 0.5625rem 0.75rem;
   }
 
   .drag-handle {
-    width: 2.4rem;
-    min-height: 2.4rem;
-    font-size: 1.275rem;
+    width: 2rem;
+    min-height: 2rem;
+    font-size: 1.0625rem;
   }
 
   .item-card {
-    padding: 1.275rem 1.5rem;
-    font-size: 1.15em;
+    padding: 1.0625rem 1.25rem;
+    font-size: 1.125em;
   }
 
   .agent-context-chip-dismiss {
-    font-size: 1.5rem;
-    padding: 0.35rem 0.45rem;
+    font-size: 1.25rem;
+    padding: 0.3rem 0.35rem;
   }
 
   .agent-chat-launcher.btn-icon {
-    width: 4.875rem;
-    height: 4.875rem;
-    min-width: 4.875rem;
-    min-height: 4.875rem;
+    width: 4.0625rem;
+    height: 4.0625rem;
+    min-width: 4.0625rem;
+    min-height: 4.0625rem;
   }
 
   .agent-chat-launcher .btn-icon-svg {
-    width: 2.175rem;
-    height: 2.175rem;
+    width: 1.8125rem;
+    height: 1.8125rem;
   }
 
   .app-toast-dismiss.btn-icon {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
   .mobile-nav-item {
-    font-size: 1.35em;
-    padding: 0.85rem 1rem;
-    min-height: 3rem;
+    font-size: 1.2em;
+    padding: 0.75rem 0.9rem;
+    min-height: 2.5rem;
   }
 
   .mobile-nav-toggle.btn-icon {
-    width: 3rem;
-    height: 3rem;
-    min-width: 3rem;
-    min-height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
   }
 
   /* Must beat later .btn-icon { display: inline-flex } */
   button.settings-trigger-desktop.btn-icon {
     display: none !important;
+  }
+
+  /* Must beat base .resume-file-menu { display: none } defined earlier */
+  .resume-file-picker {
+    display: none;
+  }
+
+  .resume-file-menu {
+    display: block;
   }
 }
 

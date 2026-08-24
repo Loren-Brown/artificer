@@ -63,7 +63,9 @@ describe("AgentTab", () => {
     const editor = screen.getByLabelText(/agent prompt markdown/i);
     await user.clear(editor);
     await user.type(editor, "# Greg\n\nUpdated prompt");
-    await user.click(screen.getByRole("button", { name: /^save$/i }));
+    await user.click(
+      screen.getByRole("button", { name: /save agent prompt/i }),
+    );
 
     await waitFor(() => {
       expect(promptApi.saveAgent).toHaveBeenCalledWith(

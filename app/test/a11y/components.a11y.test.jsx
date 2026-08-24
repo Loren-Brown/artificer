@@ -134,7 +134,7 @@ describe("a11y component tagging", () => {
       "aria-selected",
       "true",
     );
-    expect(getByRole("tab", { name: "Professional Experience" })).toHaveAttribute(
+    expect(getByRole("tab", { name: "Experience" })).toHaveAttribute(
       "aria-selected",
       "false",
     );
