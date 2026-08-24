@@ -1,8 +1,10 @@
-# Resume
+# Artificer
 
-Personal resume tooling for modern tech applications.
+**Build and enchant your resume.**
 
-The **Resume Builder** helps you craft and maintain tech resumes locally in the browser. Your data stays in a workspace folder you choose; no backend is required at runtime.
+A local workshop for modern tech applications: craft your résumé like an artisan, keep your materials in a folder on your machine, and refine the finished scroll (LaTeX → PDF) in the browser—no quest-giver server required.
+
+Pick a workspace, shape your experience and skills, preview the parchment, and optionally call on LLM agents (your key or WebMCP) when you want a second pair of eyes. Your chronicle stays on your hard drive; Artificer is the forge, not the vault.
 
 **Setup, develop, and test:** [SETUP.md](./SETUP.md)  
 **Third-party libraries & licenses:** [DEPENDENCIES.md](./DEPENDENCIES.md)

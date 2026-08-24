@@ -15,6 +15,7 @@ import {
   dataTypePanelProps,
 } from "./components/DataTypeTabList.jsx";
 import { AgentChat } from "./components/AgentChat.jsx";
+import { BrandMark } from "./components/BrandMark.jsx";
 import { SettingsButton } from "./components/SettingsButton.jsx";
 import {
   WorkspaceProvider,
@@ -71,14 +72,11 @@ function AppShell() {
     <div className="app">
       <header className="app-header">
         <div className="app-brand">
-          <img
-            className="app-brand-icon"
-            src="/favicon.svg"
-            alt=""
-            width="36"
-            height="36"
-          />
-          <h1>Resume Builder</h1>
+          <BrandMark size={43} />
+          <div className="app-brand-text">
+            <h1>Artificer</h1>
+            <p className="app-brand-slogan">Build and enchant your resume</p>
+          </div>
         </div>
         <SettingsButton
           workspaceName={workspaceName}

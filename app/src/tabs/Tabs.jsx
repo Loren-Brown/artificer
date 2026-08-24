@@ -234,7 +234,7 @@ export function ResumeTab() {
     } catch {
       /* ignore */
     }
-    return "light";
+    return "dark";
   });
 
   function onLatexThemeChange(next) {

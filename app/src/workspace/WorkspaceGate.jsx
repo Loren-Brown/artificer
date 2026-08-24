@@ -1,3 +1,4 @@
+import { BrandMark } from "../components/BrandMark.jsx";
 import { useWorkspace } from "./WorkspaceContext.jsx";
 
 export function WorkspaceGate() {
@@ -7,7 +8,7 @@ export function WorkspaceGate() {
     return (
       <div className="workspace-gate">
         <div className="workspace-gate-card">
-          <h1>Resume Builder</h1>
+          <h1>Artificer</h1>
           <p className="muted">Restoring workspace…</p>
         </div>
       </div>
@@ -19,14 +20,9 @@ export function WorkspaceGate() {
   return (
     <div className="workspace-gate">
       <div className="workspace-gate-card">
-        <img
-          className="app-brand-icon"
-          src="/favicon.svg"
-          alt=""
-          width="48"
-          height="48"
-        />
-        <h1>Resume Builder</h1>
+        <BrandMark size={58} className="brand-mark-gate" />
+        <h1>Artificer</h1>
+        <p className="app-brand-slogan">Build and enchant your resume</p>
         <p>
           Choose a local folder for your resumes, data, prompts, and app state.
           Everything stays on your machine.
